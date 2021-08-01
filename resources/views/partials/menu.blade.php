@@ -20,38 +20,17 @@
                         </p>
                     </a>
                 </li>
-                @can('file_access')
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("admin.files.index") }}">
-                        <i class="fas fa-fw fa-folder nav-icon">
-                        </i>
-                        <p>
-                            {{ trans('global.file') }}
-                        </p>
-                    </a>
-                </li>
-                    @can('file_import')
+                @can('candidate_access')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route("admin.files.view") }}"  style="padding-left: 2rem;font-size: .85rem;">
-                            <i class="fas fa-fw fa-upload nav-icon" style="font-size: .85rem;">
+                        <a href="{{ route("admin.candidates.index") }}" class="nav-link {{ request()->is("admin/candidates") || request()->is("admin/candidates/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fa fa-user-friends">
+
                             </i>
                             <p>
-                                Import
+                                Candidates
                             </p>
                         </a>
                     </li>
-                    @endcan
-                    @can('series_access')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route("admin.files.series") }}"  style="padding-left: 2rem;font-size: .85rem;">
-                            <i class="fas fa-fw fa-list nav-icon" style="font-size: .85rem;">
-                            </i>
-                            <p>
-                                Type & Series
-                            </p>
-                        </a>
-                    </li>
-                    @endcan
                 @endcan
                 @can('user_management_access')
                     <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
