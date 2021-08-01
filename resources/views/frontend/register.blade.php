@@ -30,7 +30,7 @@
                                 <p class="kh">ទម្រង់ចុះឈ្មោះ</p>
                             </div>
                             <div class="col-md-12">
-                                <form id="frm_register">
+                                <form id="frm_register" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row mb-4">
                                         <div class="col-md-6">
@@ -175,6 +175,13 @@
                                                     <input class="form-control" type="text" name="ref_id" id="ref_id">
                                                     <span class="invalid-feedback" id="ref_id_error"></span>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="trandsaction" class="required kh mb-0"><span class="text-danger">*</span> រូបភាពប្រតិបត្តិការ</label>
+                                                    <p>Trandsaction</p>
+                                                    <input type="file" name="trandsaction" id="trandsaction" onchange="preview()"><br>
+                                                    <img id="frame" class="d-none" src="" width="100px" height="100px"/>
+                                                    <span class="invalid-feedback" id="trandsaction_error"></span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12 text-center mb-5" style="">
@@ -245,7 +252,7 @@
     <script src="{{ asset('js/igorescobar-jQuery-Mask-Plugin-535b4e4/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2/sweetalert2@10.js') }}"></script>
     <script>
-        $('body').on('focus', '#phone', function(){
+    $('body').on('focus', '#phone', function(){
         var maskBehavior = function (val) {
             return val.replace(/\D/g, '').length === 11 ? '0000000000' : '0000000000';
         },
@@ -264,7 +271,10 @@
         };
         $(this).mask(maskBehavior, options);
     });
-   
+    function preview() {
+        $('#frame').removeClass('d-none');
+        frame.src=URL.createObjectURL(event.target.files[0]);
+    }
     $(document).ready(function () {
         $('#frm_register').submit(function(e){
             e.preventDefault();
@@ -433,6 +443,19 @@
                             $('#ref_id').focus(function(){
                                 $('#ref_id').removeClass('is-invalid');
                                 $('#ref_id_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.ref_id) {
+                            $('#trandsaction').addClass('is-invalid');
+                            $('#trandsaction').focus();
+                            if(response.responseJSON.errors.trandsaction[0] === 'The ref id has already been taken.') {
+                                $('#trandsaction_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#trandsaction_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#trandsaction').focus(function(){
+                                $('#trandsaction').removeClass('is-invalid');
+                                $('#trandsaction_error').text('');
                             });
                         };
                     }
