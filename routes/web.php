@@ -10,10 +10,11 @@ use App\Http\Controllers\Admin\UserAlertsController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 
-Route::view('/', 'frontend.register');
+Route::get('/', [CandidatesController::class, 'register']);
+Route::post('registering', [CandidatesController::class, 'registering'])->name('registering');
 Route::get('/home', function () {
     if (session('status')) {
-        return redirect()->route('admin.files.index')->with('status', session('status'));
+        return redirect()->route('admin.candidates.index')->with('status', session('status'));
     }
 
     return redirect()->route('admin.home');
@@ -41,7 +42,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('user-alerts', UserAlertsController::class)->except(['edit', 'update']);
 
     //Candidate
-    Route::resource('candidates', CandidatesController::class)->except(['create']);
+    Route::delete('candidates/destroy', [CandidatesController::class , 'massDestroy'])->name('candidates.massDestroy');
+    Route::resource('candidates', CandidatesController::class)->except(['create', 'store']);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

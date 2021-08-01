@@ -7,25 +7,18 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>Fantasy Season 2</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet" />
-    <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
-    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
     <link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap" rel="stylesheet">
     <link href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom1.css') }}" rel="stylesheet" />
-    @yield('styles')
 </head>
 
-<body class="layout-fixed" style="height: auto;">
+<body style="height: auto;">
     <div class="wrapper">
-        <div class="container">
+        <div class="container mb-5">
             <div class="row">
                 <div class="col-md-10 mx-auto">
                     <img class="banner" src="{{ asset('dist/img/FantasySeason2BannerWebsite.jpg') }}" alt="banner">
@@ -37,76 +30,97 @@
                                 <p class="kh">ទម្រង់ចុះឈ្មោះ</p>
                             </div>
                             <div class="col-md-12">
-                                <form action="">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
+                                <form id="frm_register">
+                                    @csrf
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="name" class="required kh mb-0">គោត្តនាម​ និងនាម</label>
+                                                <label for="manager_name" class="required kh mb-0"><span class="text-danger">*</span> គោត្តនាម​ និងនាម</label>
                                                 <p>Manger Name</p>
-                                                <input class="form-control" type="text" name="" id="" placeholder="គោត្តនាម​ និងនាម / Manager Name">
+                                                <input class="form-control" type="text" name="manager_name" id="manager_name" placeholder="គោត្តនាម​ និងនាម / Manager Name">
+                                                <span class="invalid-feedback" id="manager_name_error"></span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="team_name" class="required kh mb-0">ឈ្មោះក្រុម</label>
+                                                <label for="team_name" class="required kh mb-0"><span class="text-danger">*</span> ឈ្មោះក្រុម</label>
                                                 <p>Team Name</p>
-                                                <input class="form-control" type="text" name="" id="" placeholder="ឈ្មោះក្រុម">
+                                                <input class="form-control" type="text" name="team_name" id="team_name" placeholder="ឈ្មោះក្រុម">
+                                                <span class="invalid-feedback" id="team_name_error"></span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="dob" class="required kh mb-0">ថ្ងៃខែឆ្នាំកំណើត</label>
+                                                <label for="dob" class="required kh mb-0"><span class="text-danger">*</span> ថ្ងៃខែឆ្នាំកំណើត</label>
                                                 <p>Day of birth</p>
-                                                <input class="form-control" type="date" name="" id="" placeholder="ថ្ងៃខែឆ្នាំកំណើត">
+                                                <input class="form-control" type="date" name="dob" id="dob" max='2010-01-01' placeholder="ថ្ងៃខែឆ្នាំកំណើត">
+                                                <span class="invalid-feedback" id="dob_error"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone" class="required kh mb-0"><span class="text-danger">*</span> លេខទូរស័ព្ទ</label>
+                                                <p>Phone</p>
+                                                <input class="form-control" type="text" name="phone" id="phone">
+                                                <span class="invalid-feedback" id="phone_error"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group" style="margin-bottom: 1.8rem;">
-                                                <label for="gender" class="required kh mb-0">ភេទ</label>
+                                                <label for="gender" class="required kh mb-0"><span class="text-danger">*</span> ភេទ</label>
                                                 <p>Gender</p>
                                                 <div class="icheck-primary d-inline" style="margin-right: 15px;">
-                                                    <input type="radio" id="radioPrimary1" name="r1">
+                                                    <input type="radio" id="radioPrimary1" name="gender" value="Male">
                                                     <label for="radioPrimary1"​ class="kh1">
                                                         ប្រុស
                                                     </label>
                                                 </div>
                                                 <div class="icheck-primary d-inline" style="margin-right: 15px;">
-                                                    <input type="radio" id="radioPrimary2" name="r1">
+                                                    <input type="radio" id="radioPrimary2" name="gender" value="Female">
                                                     <label for="radioPrimary2" class="kh1">
                                                         ស្រី
                                                     </label>
                                                 </div>
                                                 <div class="icheck-primary d-inline" style="margin-right: 15px;">
-                                                    <input type="radio" id="radioPrimary3" name="r1">
+                                                    <input type="radio" id="radioPrimary3" name="gender" value="Other">
                                                     <label for="radioPrimary3" class="kh1">
                                                         មិនព័ណ៍នា
                                                     </label>
                                                 </div>
+                                                <br>
+                                                <span class="feedback" id="gender_error"></span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="favorite_team" class="required kh mb-0">ក្លឹបគាំទ្រ</label>
+                                                <label for="fan_club" class="required kh mb-0"><span class="text-danger">*</span> ក្លឹបគាំទ្រ</label>
                                                 <p>Favorite Team</p>
-                                                <select class="form-control">
+                                                <select class="form-control" name="fan_club" id="fan_club">
                                                     <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
-                                                    <option value="">Select Favorite Team</option>
+                                                    <option value="Arsenal">Arsenal</option>
+                                                    <option value="Aston Villa">Aston Villa</option>
+                                                    <option value="Brentford">Brentford</option>
+                                                    <option value="Brighton">Brighton</option>
+                                                    <option value="Burnley">Burnley</option>
+                                                    <option value="Chelsea">Chelsea</option>
+                                                    <option value="Crystal Palace">Crystal Palace</option>
+                                                    <option value="Everton">Everton</option>
+                                                    <option value="Leeds United">Leeds United</option>
+                                                    <option value="Leicester City">Leicester City</option>
+                                                    <option value="Liverpool">Liverpool</option>
+                                                    <option value="Man City">Man City</option>
+                                                    <option value="Man United">Man United</option>
+                                                    <option value="Newcastle">Newcastle</option>
+                                                    <option value="Norwich City">Norwich City</option>
+                                                    <option value="Southampton">Southampton</option>
+                                                    <option value="Tottenham Hotspur">Tottenham Hotspur</option>
+                                                    <option value="Watford">Watford</option>
+                                                    <option value="West Ham">West Ham</option>
+                                                    <option value="Wolves">Wolves</option>
                                                 </select>
+                                                <span class="invalid-feedback" id="fan_club_error"></span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="email" class="required kh mb-0">អ៊ីម៉ែល</label>
+                                                <label for="email" class="required kh mb-0"><span class="text-danger">*</span> អ៊ីម៉ែល</label>
                                                 <p>Email</p>
-                                                <input class="form-control" type="email" name="" id="" placeholder="អ៊ីម៉ែល">
+                                                <input class="form-control" type="email" name="email" id="email" placeholder="អ៊ីម៉ែល">
+                                                <span class="invalid-feedback" id="email_error"></span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12 mb-3">
                                             <p class="text-danger mb-3 khmer-title"><strong>*</strong>លក្ខន្តិកៈ</p>
                                             <ul>
@@ -123,8 +137,48 @@
                                                 <p class="note"><strong class="text-danger​" style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS</strong>​ ​រក្សាសិទ្ធក្នុងការកែប្រែលក្ខន្តិកៈទាំងអស់ខាងលើដោយពុំចាំបាច់ជម្រាបជូនដំណឹងជាមុន!</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-12 text-center" style="">
-                                            <button class="btn btn-lg btn-danger​ btn-kh">ចុះឈ្មោះ</button>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="text-danger mb-3 khmer-title">បង់ប្រាក់</p>
+                                            <div class="pl-3">
+                                                <div class="form-group">
+                                                    <label for="fan_club" class="required kh mb-0"><span class="text-danger">*</span> បង់តាម</label>
+                                                    <p>Bank</p>
+                                                    <select class="form-control" name="bank" id="bank">
+                                                        <option value=""></option>
+                                                        <option value="ABA">ABA</option>
+                                                        <option value="Wing">Wing</option>
+                                                        <option value="J-Trust Royal Bank">J-Trust Royal Bank</option>
+                                                    </select>
+                                                    <span class="invalid-feedback" id="bank_error"></span>
+                                                </div>
+                                                <ul style="color: rgb(163, 30, 30); user-select: text;">
+                                                    <li style="font-weight: 500; font-family: 'Roboto', sans-serif;">* ABA               : <strong>000881867</strong></li>
+                                                    <li style="font-weight: 500; font-family: 'Roboto', sans-serif;">* Wing              : <strong>000881867</strong></li>
+                                                    <li style="font-weight: 500; font-family: 'Roboto', sans-serif;">* J-Trust Royal Bank: <strong>000881867</strong></li>
+                                                    <li><span style="font-weight: 500; font-family: 'Roboto', sans-serif;">*</span> ឈ្មោះ : <strong style="font-weight: 500; font-family: 'Roboto', sans-serif;">Cambodia Broadcasting Service</strong></li>
+                                                </ul>
+                                                <div class="form-group">
+                                                    <label for="account_name" class="required kh mb-0"><span class="text-danger">*</span> ឈ្មោះគណនី</label>
+                                                    <p>Account Name</p>
+                                                    <input class="form-control" type="text" name="account_name" id="account_name">
+                                                    <span class="invalid-feedback" id="account_name_error"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="account_no" class="required kh mb-0"><span class="text-danger">*</span> លេខគណនី</label>
+                                                    <p>Account Number</p>
+                                                    <input class="form-control" type="number" name="account_no" id="account_no">
+                                                    <span class="invalid-feedback" id="account_no_error"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="ref_id" class="required kh mb-0"><span class="text-danger">*</span> លេខប្រតិបត្តិការ</label>
+                                                    <p>Ref ID</p>
+                                                    <input class="form-control" type="text" name="ref_id" id="ref_id">
+                                                    <span class="invalid-feedback" id="ref_id_error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-center mb-5" style="">
+                                            <button class="btn btn-lg btn-danger​ btn-kh" type="submit">ចុះឈ្មោះ</button>
                                         </div>
                                     </div>
                                 </form>
@@ -134,313 +188,258 @@
                 </div>
             </div>
         </div>
+        <footer class="main-footer" style="margin-left: 0px;">
+            <div class="float-right d-none d-sm-block">
+                <b>CBS Digital</b>
+            </div>
+            <strong> &copy;</strong> {{ trans('global.allRightsReserved') }}
+        </footer>
     </div>
-
+    <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h5 class="modal-title text-success" id="exampleModalLabel">បានចុះឈ្មោះជោគជ័យ</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <table class="table">
+                        <tbody​>
+                            <tr>
+                                <th>
+                                    Name: 
+                                </th>
+                                <td id="d-name">
+                                </td>
+                                <th>
+                                    Team:
+                                </th>
+                                <td id="d-team">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Phone: 
+                                </th>
+                                <td id="d-phone">
+                                </td>
+                                <th>
+                                    Email:
+                                </th>
+                                <td id="d-email">
+                                </td>
+                            </tr>
+                        </tbody​>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Khmerkulen';">យល់ព្រម</button>
+              {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- <script src="{{ asset('plugins/popper/popper.min.js') }}"></script> -->
-    <!-- <script src="{{ asset('dist/js/adminlte.min.js') }}"></script> -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
-    </script>
-    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/igorescobar-jQuery-Mask-Plugin-535b4e4/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2/sweetalert2@10.js') }}"></script>
     <script>
-        $(document).ready(function () {
-            $(".notifications-menu").on('click', function () {
-                if (!$(this).hasClass('open')) {
-                    $('.notifications-menu .label-warning').hide();
-                    $.get('/admin/user-alerts/read');
+        $('body').on('focus', '#phone', function(){
+        var maskBehavior = function (val) {
+            return val.replace(/\D/g, '').length === 11 ? '0000000000' : '0000000000';
+        },
+        options = {
+            onKeyPress: function(val, e, field, options) {
+                field.mask(maskBehavior.apply({}, arguments), options);
+
+                if(field[0].value.length >= 15){
+                    var val = field[0].value.replace(/\D/g, '');
+                    if(/\d\d(\d){7,8}/.test(val)){
+                        field[0].value = '';
+                        alert('Telefone Invalido');
+                    }
                 }
-            });
-        });
+            }
+        };
+        $(this).mask(maskBehavior, options);
+    });
+   
+    $(document).ready(function () {
+        $('#frm_register').submit(function(e){
+            e.preventDefault();
 
-    </script>
-    <script>
-        /*!
-         * AdminLTE v3.0.0-alpha.2 (https://adminlte.io)
-         * Copyright 2014-2018 Abdullah Almsaeed <abdullah@almsaeedstudio.com>
-         * Licensed under MIT (https://github.com/almasaeed2010/AdminLTE/blob/master/LICENSE)
-         */
-        ! function (e, t) {
-            "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define &&
-                define.amd ? define(["exports"], t) : t(e.adminlte = {})
-        }(this, function (e) {
-            "use strict";
-            var i, t, o, n, r, a, s, c, f, l, u, d, h, p, _, g, y, m, v, C, D, E, A, O, w, b, L, S, j, T, I, Q, R,
-                P, x, B, M, k, H, N, Y, U, V, G, W, X, z, F, q, J, K, Z, $, ee, te, ne = "function" ==
-                typeof Symbol && "symbol" == typeof Symbol.iterator ? function (e) {
-                    return typeof e
-                } : function (e) {
-                    return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ?
-                        "symbol" : typeof e
-                },
-                ie = function (e, t) {
-                    if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
-                },
-                oe = (i = jQuery, t = "ControlSidebar", o = "lte.control.sidebar", n = i.fn[t], r =
-                    ".control-sidebar", a = '[data-widget="control-sidebar"]', s = ".main-header", c =
-                    "control-sidebar-open", f = "control-sidebar-slide-open", l = {
-                        slide: !0
-                    }, u = function () {
-                        function n(e, t) {
-                            ie(this, n), this._element = e, this._config = this._getConfig(t)
-                        }
-                        return n.prototype.show = function () {
-                            this._config.slide ? i("body").removeClass(f) : i("body").removeClass(c)
-                        }, n.prototype.collapse = function () {
-                            this._config.slide ? i("body").addClass(f) : i("body").addClass(c)
-                        }, n.prototype.toggle = function () {
-                            this._setMargin(), i("body").hasClass(c) || i("body").hasClass(f) ? this.show() :
-                                this.collapse()
-                        }, n.prototype._getConfig = function (e) {
-                            return i.extend({}, l, e)
-                        }, n.prototype._setMargin = function () {
-                            i(r).css({
-                                top: i(s).outerHeight()
-                            })
-                        }, n._jQueryInterface = function (t) {
-                            return this.each(function () {
-                                var e = i(this).data(o);
-                                if (e || (e = new n(this, i(this).data()), i(this).data(o, e)),
-                                    "undefined" === e[t]) throw new Error(t + " is not a function");
-                                e[t]()
-                            })
-                        }, n
-                    }(), i(document).on("click", a, function (e) {
-                        e.preventDefault(), u._jQueryInterface.call(i(this), "toggle")
-                    }), i.fn[t] = u._jQueryInterface, i.fn[t].Constructor = u, i.fn[t].noConflict = function () {
-                        return i.fn[t] = n, u._jQueryInterface
-                    }, u),
-                re = (d = jQuery, h = "Layout", p = "lte.layout", _ = d.fn[h], g = ".main-sidebar", y =
-                    ".main-header", m = ".content-wrapper", v = ".main-footer", C = "hold-transition", D =
-                    function () {
-                        function n(e) {
-                            ie(this, n), this._element = e, this._init()
-                        }
-                        return n.prototype.fixLayoutHeight = function () {
-                            var e = {
-                                    window: d(window).height(),
-                                    header: d(y).outerHeight(),
-                                    footer: d(v).outerHeight(),
-                                    sidebar: d(g).height()
-                                },
-                                t = this._max(e);
-                            d(m).css("min-height", e.window - e.header - e.footer), d(g).css("min-height", e
-                                .window - e.header)
-                        }, n.prototype._init = function () {
-                            var e = this;
-                            d("body").removeClass(C), this.fixLayoutHeight(), d(g).on(
-                                "collapsed.lte.treeview expanded.lte.treeview collapsed.lte.pushmenu expanded.lte.pushmenu",
-                                function () {
-                                    e.fixLayoutHeight()
-                                }), d(window).resize(function () {
-                                e.fixLayoutHeight()
-                            }), d("body, html").css("height", "auto")
-                        }, n.prototype._max = function (t) {
-                            var n = 0;
-                            return Object.keys(t).forEach(function (e) {
-                                t[e] > n && (n = t[e])
-                            }), n
-                        }, n._jQueryInterface = function (t) {
-                            return this.each(function () {
-                                var e = d(this).data(p);
-                                e || (e = new n(this), d(this).data(p, e)), t && e[t]()
-                            })
-                        }, n
-                    }(), d(window).on("load", function () {
-                        D._jQueryInterface.call(d("body"))
-                    }), d.fn[h] = D._jQueryInterface, d.fn[h].Constructor = D, d.fn[h].noConflict = function () {
-                        return d.fn[h] = _, D._jQueryInterface
-                    }, D),
-                ae = (E = jQuery, A = "PushMenu", w = "." + (O = "lte.pushmenu"), b = E.fn[A], L = {
-                    COLLAPSED: "collapsed" + w,
-                    SHOWN: "shown" + w
-                }, S = {
-                    screenCollapseSize: 768
-                }, j = {
-                    TOGGLE_BUTTON: '[data-widget="pushmenu"]',
-                    SIDEBAR_MINI: ".sidebar-mini",
-                    SIDEBAR_COLLAPSED: ".sidebar-collapse",
-                    BODY: "body",
-                    OVERLAY: "#sidebar-overlay",
-                    WRAPPER: ".wrapper"
-                }, T = "sidebar-collapse", I = "sidebar-open", Q = function () {
-                    function n(e, t) {
-                        ie(this, n), this._element = e, this._options = E.extend({}, S, t), E(j.OVERLAY)
-                            .length || this._addOverlay()
-                    }
-                    return n.prototype.show = function () {
-                        E(j.BODY).addClass(I).removeClass(T);
-                        var e = E.Event(L.SHOWN);
-                        E(this._element).trigger(e)
-                    }, n.prototype.collapse = function () {
-                        E(j.BODY).removeClass(I).addClass(T);
-                        var e = E.Event(L.COLLAPSED);
-                        E(this._element).trigger(e)
-                    }, n.prototype.toggle = function () {
-                        (E(window).width() >= this._options.screenCollapseSize ? !E(j.BODY).hasClass(T) : E(
-                            j.BODY).hasClass(I)) ? this.collapse(): this.show()
-                    }, n.prototype._addOverlay = function () {
-                        var e = this,
-                            t = E("<div />", {
-                                id: "sidebar-overlay"
-                            });
-                        t.on("click", function () {
-                            e.collapse()
-                        }), E(j.WRAPPER).append(t)
-                    }, n._jQueryInterface = function (t) {
-                        return this.each(function () {
-                            var e = E(this).data(O);
-                            e || (e = new n(this), E(this).data(O, e)), t && e[t]()
-                        })
-                    }, n
-                }(), E(document).on("click", j.TOGGLE_BUTTON, function (e) {
-                    e.preventDefault();
-                    var t = e.currentTarget;
-                    "pushmenu" !== E(t).data("widget") && (t = E(t).closest(j.TOGGLE_BUTTON)), Q
-                        ._jQueryInterface.call(E(t), "toggle")
-                }), E.fn[A] = Q._jQueryInterface, E.fn[A].Constructor = Q, E.fn[A].noConflict = function () {
-                    return E.fn[A] = b, Q._jQueryInterface
-                }, Q),
-                se = (R = jQuery, P = "Treeview", B = "." + (x = "lte.treeview"), M = R.fn[P], k = {
-                    SELECTED: "selected" + B,
-                    EXPANDED: "expanded" + B,
-                    COLLAPSED: "collapsed" + B,
-                    LOAD_DATA_API: "load" + B
-                }, H = ".nav-item", N = ".nav-treeview", Y = ".menu-open", V = "menu-open", G = {
-                    trigger: (U = '[data-widget="treeview"]') + " " + ".nav-link",
-                    animationSpeed: 300,
-                    accordion: !0
-                }, W = function () {
-                    function i(e, t) {
-                        ie(this, i), this._config = t, this._element = e
-                    }
-                    return i.prototype.init = function () {
-                        this._setupListeners()
-                    }, i.prototype.expand = function (e, t) {
-                        var n = this,
-                            i = R.Event(k.EXPANDED);
-                        if (this._config.accordion) {
-                            var o = t.siblings(Y).first(),
-                                r = o.find(N).first();
-                            this.collapse(r, o)
-                        }
-                        e.slideDown(this._config.animationSpeed, function () {
-                            t.addClass(V), R(n._element).trigger(i)
-                        })
-                    }, i.prototype.collapse = function (e, t) {
-                        var n = this,
-                            i = R.Event(k.COLLAPSED);
-                        e.slideUp(this._config.animationSpeed, function () {
-                            t.removeClass(V), R(n._element).trigger(i), e.find(Y + " > " + N)
-                                .slideUp(), e.find(Y).removeClass(V)
-                        })
-                    }, i.prototype.toggle = function (e) {
-                        var t = R(e.currentTarget),
-                            n = t.next();
-                        if (n.is(N)) {
-                            e.preventDefault();
-                            var i = t.parents(H).first();
-                            i.hasClass(V) ? this.collapse(R(n), i) : this.expand(R(n), i)
-                        }
-                    }, i.prototype._setupListeners = function () {
-                        var t = this;
-                        R(document).on("click", this._config.trigger, function (e) {
-                            t.toggle(e)
-                        })
-                    }, i._jQueryInterface = function (n) {
-                        return this.each(function () {
-                            var e = R(this).data(x),
-                                t = R.extend({}, G, R(this).data());
-                            e || (e = new i(R(this), t), R(this).data(x, e)), "init" === n && e[n]()
-                        })
-                    }, i
-                }(), R(window).on(k.LOAD_DATA_API, function () {
-                    R(U).each(function () {
-                        W._jQueryInterface.call(R(this), "init")
-                    })
-                }), R.fn[P] = W._jQueryInterface, R.fn[P].Constructor = W, R.fn[P].noConflict = function () {
-                    return R.fn[P] = M, W._jQueryInterface
-                }, W),
-                ce = (X = jQuery, z = "Widget", q = "." + (F = "lte.widget"), J = X.fn[z], K = {
-                    EXPANDED: "expanded" + q,
-                    COLLAPSED: "collapsed" + q,
-                    REMOVED: "removed" + q
-                }, $ = "collapsed-card", ee = {
-                    animationSpeed: "normal",
-                    collapseTrigger: (Z = {
-                        DATA_REMOVE: '[data-widget="remove"]',
-                        DATA_COLLAPSE: '[data-widget="collapse"]',
-                        CARD: ".card",
-                        CARD_HEADER: ".card-header",
-                        CARD_BODY: ".card-body",
-                        CARD_FOOTER: ".card-footer",
-                        COLLAPSED: ".collapsed-card"
-                    }).DATA_COLLAPSE,
-                    removeTrigger: Z.DATA_REMOVE
-                }, te = function () {
-                    function n(e, t) {
-                        ie(this, n), this._element = e, this._parent = e.parents(Z.CARD).first(), this
-                            ._settings = X.extend({}, ee, t)
-                    }
-                    return n.prototype.collapse = function () {
-                        var e = this;
-                        this._parent.children(Z.CARD_BODY + ", " + Z.CARD_FOOTER).slideUp(this._settings
-                            .animationSpeed,
-                            function () {
-                                e._parent.addClass($)
-                            });
-                        var t = X.Event(K.COLLAPSED);
-                        this._element.trigger(t, this._parent)
-                    }, n.prototype.expand = function () {
-                        var e = this;
-                        this._parent.children(Z.CARD_BODY + ", " + Z.CARD_FOOTER).slideDown(this._settings
-                            .animationSpeed,
-                            function () {
-                                e._parent.removeClass($)
-                            });
-                        var t = X.Event(K.EXPANDED);
-                        this._element.trigger(t, this._parent)
-                    }, n.prototype.remove = function () {
-                        this._parent.slideUp();
-                        var e = X.Event(K.REMOVED);
-                        this._element.trigger(e, this._parent)
-                    }, n.prototype.toggle = function () {
-                        this._parent.hasClass($) ? this.expand() : this.collapse()
-                    }, n.prototype._init = function (e) {
-                        var t = this;
-                        this._parent = e, X(this).find(this._settings.collapseTrigger).click(function () {
-                            t.toggle()
-                        }), X(this).find(this._settings.removeTrigger).click(function () {
-                            t.remove()
-                        })
-                    }, n._jQueryInterface = function (t) {
-                        return this.each(function () {
-                            var e = X(this).data(F);
-                            e || (e = new n(X(this), e), X(this).data(F, "string" == typeof t ? e :
-                                    t)), "string" == typeof t && t.match(/remove|toggle/) ? e[t]() :
-                                "object" === ("undefined" == typeof t ? "undefined" : ne(t)) && e
-                                ._init(X(this))
-                        })
-                    }, n
-                }(), X(document).on("click", Z.DATA_COLLAPSE, function (e) {
-                    e && e.preventDefault(), te._jQueryInterface.call(X(this), "toggle")
-                }), X(document).on("click", Z.DATA_REMOVE, function (e) {
-                    e && e.preventDefault(), te._jQueryInterface.call(X(this), "remove")
-                }), X.fn[z] = te._jQueryInterface, X.fn[z].Constructor = te, X.fn[z].noConflict = function () {
-                    return X.fn[z] = J, te._jQueryInterface
-                }, te);
-            e.ControlSidebar = oe, e.Layout = re, e.PushMenu = ae, e.Treeview = se, e.Widget = ce, Object
-                .defineProperty(e, "__esModule", {
-                    value: !0
-                })
-        });
-        //# sourceMappingURL=adminlte.min.js.map
+            let manager_name = $('#manager_name').val();
+            let team_name = $('#team_name').val();
+            let dob = $('#dob').val();
+            let gender = $('input[name="gender"]:checked').val() ? $('input[name="gender"]:checked').val() : null;
+            let fan_club = $('#fan_club').val();
+            let email = $('#email').val();
+            let phone = $('#phone').val();
+            let _token = $('input[name="_token"]').val();
 
+                $.ajax({
+                    type: "POST",
+                    url: "{{route('registering')}}",
+                    data: {
+                        _token: _token,
+                        manager_name: manager_name,
+                        team_name: team_name,
+                        dob: dob,
+                        gender: gender,
+                        fan_club: fan_club,
+                        phone: phone,
+                        email: email
+                    },
+                    success: function (response) {
+                       if(response.id){
+                            let name = response.manager_name;
+                            let team = response.team_name;
+                            let phone = response.phone;
+                            let email = response.email;
+                                // Swal.fire(
+                                //     'សូមអគុណ!',
+                                //     name+' បានចុះឈ្មោះជោគជ័យ',
+                                //     'success'
+                                // )
+                            $('#success').modal('toggle');
+                            $('#d-name').text(name);
+                            $('#d-team').text(team);
+                            $('#d-phone').text(phone);
+                            $('#d-email').text(email);
+
+                       }
+                    },
+                    error: function(response) {
+                        console.log(response);
+                        if(response.responseJSON.errors.manager_name) {
+                            $('#manager_name').addClass('is-invalid');
+                            $('#manager_name').focus();
+                            $('#manager_name_error').text('សូមពិនិត្យមើលឈ្មោះ របស់អ្នកឡើងវិញ។');
+                            $('#manager_name').focus(function(){
+                                $('#manager_name').removeClass('is-invalid');
+                                $('#manager_name_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.team_name) {
+                            $('#team_name').addClass('is-invalid');
+                            $('#team_name').focus();
+                            $('#team_name_error').text('សូមពិនិត្យមើលឈ្មោះក្រុម របស់អ្នកឡើងវិញ។');
+                            $('#team_name').focus(function(){
+                                $('#team_name').removeClass('is-invalid');
+                                $('#team_name_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.dob) {
+                            $('#dob').addClass('is-invalid');
+                            $('#dob').focus();
+                            $('#dob_error').text('សូមពិនិត្យមើលថ្ងៃខែឆ្នាំកំណើត របស់អ្នកឡើងវិញ។');
+                            $('#dob').change(function(){
+                                $('#dob').removeClass('is-invalid');
+                                $('#dob_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.gender) {
+                            $('input[name="gender"]').addClass('is-invalid');
+                            $('input[name="gender"]').focus();
+                            $('#gender_error').text('សូមជ្រើសរើសភេទ ឱ្យបានត្រឹមត្រូវ។');
+                            $('input[name="gender"]').change(function(){
+                                $('#gender').removeClass('is-invalid');
+                                $('#gender_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.fan_club) {
+                            $('#fan_club').addClass('is-invalid');
+                            $('#fan_club').focus();
+                            $('#fan_club_error').text('សូមជ្រើសរើសក្លឹបគាំទ្រ ឱ្យបានត្រឹមត្រូវ។');
+                            $('#fan_club').change(function(){
+                                $('#fan_club').removeClass('is-invalid');
+                                $('#fan_club_error').text('');
+                            });
+                        };
+                        if(response.responseJSON.errors.email) {
+                            $('#email').addClass('is-invalid');
+                            $('#email').focus();
+                            if(response.responseJSON.errors.email[0] === 'The email has already been taken.') {
+                                $('#email_error').text('អ៊ីម៉ែលនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#email_error').text('សូមពិនិត្យមើលអ៊ីម៉ែល របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#email').focus(function(){
+                                $('#email').removeClass('is-invalid');
+                                $('#email_error').text('');
+                            })
+                        };
+                        if(response.responseJSON.errors.phone) {
+                            $('#phone').addClass('is-invalid');
+                            $('#phone').focus();
+                            if(response.responseJSON.errors.phone[0] === 'The phone has already been taken.') {
+                                $('#phone_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#phone_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#phone').focus(function(){
+                                $('#phone').removeClass('is-invalid');
+                                $('#phone_error').text('');
+                            })
+                        };
+                        if(response.responseJSON.errors.phone) {
+                            $('#bank').addClass('is-invalid');
+                            $('#bank').focus();
+                            if(response.responseJSON.errors.bank[0] === 'The bank has already been taken.') {
+                                $('#bank_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#bank_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#bank').focus(function(){
+                                $('#bank').removeClass('is-invalid');
+                                $('#bank_error').text('');
+                            })
+                        };
+                        if(response.responseJSON.errors.phone) {
+                            $('#account_name').addClass('is-invalid');
+                            $('#account_name').focus();
+                            if(response.responseJSON.errors.account_name[0] === 'The account name has already been taken.') {
+                                $('#account_name_error').text('ឈ្មោះគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#account_name_error').text('សូមពិនិត្យមើលឈ្មោះគណនី របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#account_name').focus(function(){
+                                $('#account_name').removeClass('is-invalid');
+                                $('#account_name_error').text('');
+                            })
+                        };
+                        if(response.responseJSON.errors.phone) {
+                            $('#account_no').addClass('is-invalid');
+                            $('#account_no').focus();
+                            if(response.responseJSON.errors.account_no[0] === 'The account no has already been taken.') {
+                                $('#account_no_error').text('លេខគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#account_no_error').text('សូមពិនិត្យមើលលេខគណនី របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#account_no').focus(function(){
+                                $('#account_no').removeClass('is-invalid');
+                                $('#account_no_error').text('');
+                            })
+                        };
+                        if(response.responseJSON.errors.ref_id) {
+                            $('#ref_id').addClass('is-invalid');
+                            $('#ref_id').focus();
+                            if(response.responseJSON.errors.ref_id[0] === 'The ref id has already been taken.') {
+                                $('#ref_id_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            }else{
+                                $('#ref_id_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                            };
+                            $('#ref_id').focus(function(){
+                                $('#ref_id').removeClass('is-invalid');
+                                $('#ref_id_error').text('');
+                            });
+                        };
+                    }
+                });
+            })
+        });
     </script>
-    @yield('scripts')
 </body>
 
 </html>

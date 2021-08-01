@@ -9,6 +9,7 @@
 }
 body{
     -webkit-user-select: none;
+    background-color: #37174f;
 }
 .kh{
     font-family: Khmerkulen;
@@ -19,9 +20,6 @@ body{
 }
 .required{
     font-weight: 500 !important;
-}
-.layout-fixed{
-    background-color: #37174f;
 }
 .banner{
     width: 100%;
@@ -81,4 +79,43 @@ ul li{
     color: rgb(255, 255, 255);
     background-color: #3a0e5e;
     transform: scale(1.03);
+}
+.invalid-feedback{
+    margin-top: 5px;
+    font-family: Khmerkulen;
+    color: rgb(216, 25, 25);
+    font-size: 0.8rem;
+    font-weight: 100;
+    letter-spacing: 1.3px;
+}
+.feedback{
+    margin-top: 5px;
+    font-family: Khmerkulen;
+    color: rgb(216, 25, 25);
+    font-size: 0.8rem;
+    font-weight: 100;
+    letter-spacing: 1.3px;
+}
+.modal-title{
+    font-family: Khmerkulen;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+}
+.modal-header{
+    align-self: center;
+    border: none;
+}
+.modal-footer{
+    border: none;
+}
+#d-name{
+    padding-top: 15px;
+    font-family: Khmerkulen;
+    font-size: 0.9rem;
+    font-weight: 100;
+    letter-spacing: 1.2px;
+}
+td, th{
+    border: none !important;
 }

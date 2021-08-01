@@ -2,20 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCandidateRequest;
 
 class CandidatesController extends Controller
 {
     public function index()
     {
-        return view('admin.candidates.index');
+        abort_if(Gate::denies('candidate_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $candidates = Candidate::all();
+        return view('admin.candidates.index', compact('candidates'));
     }
 
-    public function store(Request $request)
+    public function register()
     {
-        //
+        return view('frontend.register');
+    }
+    public function registering(StoreCandidateRequest $request)
+    {
+        $cnadidate = Candidate::create($request->all());
+
+        return response()->json($cnadidate);
     }
 
     public function show(Candidate $candidate)
