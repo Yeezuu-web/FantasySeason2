@@ -1,0 +1,84 @@
+@font-face {
+    font-family: Khmerkulen;
+    src: url(http://127.0.0.1:8000/dist/fonts/KhmerOSKoulen.ttf);
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-family: Khmerkulen !important;
+    font-size: 0.885rem !important;
+    font-weight: 100;
+}
+body{
+    -webkit-user-select: none;
+}
+.kh{
+    font-family: Khmerkulen;
+}
+.kh1{
+    font-family: Khmerkulen;
+    font-weight: 100 !important;
+}
+.required{
+    font-weight: 500 !important;
+}
+.layout-fixed{
+    background-color: #37174f;
+}
+.banner{
+    width: 100%;
+}
+.title-form{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.title-form p{
+    padding: 0px;
+    margin: 0px;
+    align-items: center;
+    font-weight: bold;
+    font-size: 2rem;
+}
+.form-group p{
+    font-size: 0.785rem;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+.khmer-title{
+    padding: 0px;
+    margin: 0px;
+    font-weight: 500;
+    font-size: 1.35rem;
+    font-family: Khmerkulen;
+}
+ul{
+    list-style: none;
+    padding-left: 20px !important;
+}
+ul li{
+    font-weight: 100;
+    font-size: 1rem;
+    font-family: Khmerkulen;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+    line-height: 30px;
+}
+.note{
+    font-weight: 100;
+    font-size: 1.2rem;
+    font-family: Khmerkulen;
+    letter-spacing: 1.5px;
+    line-height: 40px;
+    text-align: center;
+}
+.btn-kh{
+    color: #fff;
+    font-family: Khmerkulen;
+    font-size: 1.5rem;
+    background-color: #37174f;
+    transition: 0.3s ease-in;
+}
+.btn-kh:hover{
+    color: rgb(255, 255, 255);
+    background-color: #3a0e5e;
+    transform: scale(1.03);
+}

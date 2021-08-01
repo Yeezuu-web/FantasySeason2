@@ -13,12 +13,6 @@ class CandidatesController extends Controller
         return view('admin.candidates.index');
     }
 
-    public function create()
-    {
-        //
-    }
-
-
     public function store(Request $request)
     {
         //

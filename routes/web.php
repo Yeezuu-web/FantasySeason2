@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('user-alerts', UserAlertsController::class)->except(['edit', 'update']);
 
     //Candidate
-    Route::resource('candidates', CandidatesController::class)->except(['create', 'store']);
+    Route::resource('candidates', CandidatesController::class)->except(['create']);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
