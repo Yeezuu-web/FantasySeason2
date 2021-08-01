@@ -62,6 +62,9 @@ class StoreCandidateRequest extends FormRequest
                 'required',
                 'unique:candidates'
             ], 
+            'transaction'=> [
+                'required',
+            ], 
         ];
     }
 }

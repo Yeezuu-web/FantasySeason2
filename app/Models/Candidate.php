@@ -2,14 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Candidate extends Model
+class Candidate extends Model implements HasMedia
 {
+    use SoftDeletes;
+    use InteractsWithMedia;
     use HasFactory;
 
     protected $table = "candidates";
+
+    protected $appends = [
+        'transaction',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
 
     protected $fillable = [
         'manager_name',
@@ -25,5 +42,22 @@ class Candidate extends Model
         'ref_id',
         'status',
     ];
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
+        $this->addMediaConversion('preview')->fit('crop', 120, 120);
+    }
     
+    public function getTransactionAttribute()
+    {
+        $file = $this->getMedia('transaction')->last();
+        if ($file) {
+            $file->url       = $file->getUrl();
+            $file->thumbnail = $file->getUrl('thumb');
+            $file->preview   = $file->getUrl('preview');
+        }
+
+        return $file;
+    }
 }

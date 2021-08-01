@@ -54,6 +54,9 @@
                             Ref ID
                         </th>
                         <th>
+                            Transaction
+                        </th>
+                        <th>
                             Status
                         </th>
                         <th>
@@ -105,6 +108,13 @@
                             </td>
                             <td>
                                 {{ $candidate->ref_id ?? '' }}
+                            </td>
+                            <td>
+                                @if($candidate->transaction)
+                                    <a href="{{ $candidate->transaction->getUrl() }}" target="_blank" style="display: inline-block">
+                                        <img src="{{ $candidate->transaction->getUrl('thumb') }}">
+                                    </a>
+                                @endif
                             </td>
                             <td>
                                 @if($candidate->status === 0)
@@ -178,7 +188,7 @@
                 searchable: false,
                 targets: -1
             }, {
-            targets: [0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15],
+            targets: [0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16],
             visible: true,
             }, { 
             targets: '_all',
@@ -219,7 +229,7 @@
             className: 'btn-default',
             text: copyButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
             }
           },
           {
@@ -227,7 +237,7 @@
             className: 'btn-default',
             text: csvButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
             }
           },
           {
@@ -235,7 +245,7 @@
             className: 'btn-default',
             text: excelButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
             }
           },
           {
@@ -243,7 +253,7 @@
             className: 'btn-default',
             text: pdfButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
             }
           },
           {
@@ -251,7 +261,7 @@
             className: 'btn-default',
             text: printButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
             }
           },
           {

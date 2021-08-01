@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
     <link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom1.css') }}" rel="stylesheet" />
 </head>
@@ -176,11 +177,11 @@
                                                     <span class="invalid-feedback" id="ref_id_error"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="trandsaction" class="required kh mb-0"><span class="text-danger">*</span> រូបភាពប្រតិបត្តិការ</label>
-                                                    <p>Trandsaction</p>
-                                                    <input type="file" name="trandsaction" id="trandsaction" onchange="preview()"><br>
-                                                    <img id="frame" class="d-none" src="" width="100px" height="100px"/>
-                                                    <span class="invalid-feedback" id="trandsaction_error"></span>
+                                                    <label for="select_file" class="required kh mb-0"><span class="text-danger">*</span> រូបភាពប្រតិបត្តិការ</label>
+                                                    <p>Transaction</p>
+                                                    <div class="needsclick dropzone" id="transaction-dropzone">
+                                                    </div>
+                                                    <span class="feedback" id="transaction_error"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -251,6 +252,61 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/igorescobar-jQuery-Mask-Plugin-535b4e4/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2/sweetalert2@10.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
+    <script>
+        Dropzone.options.transactionDropzone = {
+        url: '{{ route('candidates.storeMedia') }}',
+        maxFilesize: 2, // MB
+        acceptedFiles: '.jpeg,.jpg,.png,.gif',
+        maxFiles: 1,
+        addRemoveLinks: true,
+        headers: {
+          'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+          size: 2,
+          width: 4096,
+          height: 4096
+        },
+        success: function (file, response) {
+          $('form').find('input[name="transaction"]').remove()
+          $('form').append('<input type="hidden" name="transaction" value="' + response.name + '">')
+        },
+        removedfile: function (file) {
+          file.previewElement.remove()
+          if (file.status !== 'error') {
+            $('form').find('input[name="transaction"]').remove()
+            this.options.maxFiles = this.options.maxFiles + 1
+          }
+        },
+        init: function () {
+        @if(isset($candidate) && $candidate->transaction)
+            var file = {!! json_encode($candidate->transaction) !!}
+                this.options.addedfile.call(this, file)
+            this.options.thumbnail.call(this, file, file.preview)
+            file.previewElement.classList.add('dz-complete')
+            $('form').append('<input type="hidden" name="transaction" value="' + file.file_name + '">')
+            this.options.maxFiles = this.options.maxFiles - 1
+        @endif
+            },
+            error: function (file, response) {
+                if ($.type(response) === 'string') {
+                    var message = response //dropzone sends it's own error messages in string
+                } else {
+                    var message = response.errors.file
+                }
+                file.previewElement.classList.add('dz-error')
+                _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+                _results = []
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    node = _ref[_i]
+                    _results.push(node.textContent = message)
+                }
+        
+                return _results
+            }
+        }
+    </script>
     <script>
     $('body').on('focus', '#phone', function(){
         var maskBehavior = function (val) {
@@ -286,180 +342,185 @@
             let fan_club = $('#fan_club').val();
             let email = $('#email').val();
             let phone = $('#phone').val();
+            let bank = $('#bank').val();
+            let account_name = $('#account_name').val();
+            let account_no = $('#account_no').val();
+            let ref_id = $('#ref_id').val();
+            let transaction = $('input[name="transaction"]').val();
             let _token = $('input[name="_token"]').val();
+            $.ajax({
+                type: "POST",
+                url: "{{route('registering')}}",
+                data: {
+                    _token: _token,
+                    manager_name: manager_name,
+                    team_name: team_name,
+                    dob: dob,
+                    gender: gender,
+                    fan_club: fan_club,
+                    phone: phone,
+                    email: email,
+                    bank: bank,
+                    account_name: account_name,
+                    account_no: account_no,
+                    ref_id: ref_id,
+                    transaction: transaction,
+                },
+                success: function (response) {
+                    if(response.id){
+                        let name = response.manager_name;
+                        let team = response.team_name;
+                        let phone = response.phone;
+                        let email = response.email;
+                            // Swal.fire(
+                            //     'សូមអគុណ!',
+                            //     name+' បានចុះឈ្មោះជោគជ័យ',
+                            //     'success'
+                            // )
+                        $('#success').modal('toggle');
+                        $('#d-name').text(name);
+                        $('#d-team').text(team);
+                        $('#d-phone').text(phone);
+                        $('#d-email').text(email);
 
-                $.ajax({
-                    type: "POST",
-                    url: "{{route('registering')}}",
-                    data: {
-                        _token: _token,
-                        manager_name: manager_name,
-                        team_name: team_name,
-                        dob: dob,
-                        gender: gender,
-                        fan_club: fan_club,
-                        phone: phone,
-                        email: email
-                    },
-                    success: function (response) {
-                       if(response.id){
-                            let name = response.manager_name;
-                            let team = response.team_name;
-                            let phone = response.phone;
-                            let email = response.email;
-                                // Swal.fire(
-                                //     'សូមអគុណ!',
-                                //     name+' បានចុះឈ្មោះជោគជ័យ',
-                                //     'success'
-                                // )
-                            $('#success').modal('toggle');
-                            $('#d-name').text(name);
-                            $('#d-team').text(team);
-                            $('#d-phone').text(phone);
-                            $('#d-email').text(email);
-
-                       }
-                    },
-                    error: function(response) {
-                        console.log(response);
-                        if(response.responseJSON.errors.manager_name) {
-                            $('#manager_name').addClass('is-invalid');
-                            $('#manager_name').focus();
-                            $('#manager_name_error').text('សូមពិនិត្យមើលឈ្មោះ របស់អ្នកឡើងវិញ។');
-                            $('#manager_name').focus(function(){
-                                $('#manager_name').removeClass('is-invalid');
-                                $('#manager_name_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.team_name) {
-                            $('#team_name').addClass('is-invalid');
-                            $('#team_name').focus();
-                            $('#team_name_error').text('សូមពិនិត្យមើលឈ្មោះក្រុម របស់អ្នកឡើងវិញ។');
-                            $('#team_name').focus(function(){
-                                $('#team_name').removeClass('is-invalid');
-                                $('#team_name_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.dob) {
-                            $('#dob').addClass('is-invalid');
-                            $('#dob').focus();
-                            $('#dob_error').text('សូមពិនិត្យមើលថ្ងៃខែឆ្នាំកំណើត របស់អ្នកឡើងវិញ។');
-                            $('#dob').change(function(){
-                                $('#dob').removeClass('is-invalid');
-                                $('#dob_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.gender) {
-                            $('input[name="gender"]').addClass('is-invalid');
-                            $('input[name="gender"]').focus();
-                            $('#gender_error').text('សូមជ្រើសរើសភេទ ឱ្យបានត្រឹមត្រូវ។');
-                            $('input[name="gender"]').change(function(){
-                                $('#gender').removeClass('is-invalid');
-                                $('#gender_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.fan_club) {
-                            $('#fan_club').addClass('is-invalid');
-                            $('#fan_club').focus();
-                            $('#fan_club_error').text('សូមជ្រើសរើសក្លឹបគាំទ្រ ឱ្យបានត្រឹមត្រូវ។');
-                            $('#fan_club').change(function(){
-                                $('#fan_club').removeClass('is-invalid');
-                                $('#fan_club_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.email) {
-                            $('#email').addClass('is-invalid');
-                            $('#email').focus();
-                            if(response.responseJSON.errors.email[0] === 'The email has already been taken.') {
-                                $('#email_error').text('អ៊ីម៉ែលនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#email_error').text('សូមពិនិត្យមើលអ៊ីម៉ែល របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#email').focus(function(){
-                                $('#email').removeClass('is-invalid');
-                                $('#email_error').text('');
-                            })
-                        };
-                        if(response.responseJSON.errors.phone) {
-                            $('#phone').addClass('is-invalid');
-                            $('#phone').focus();
-                            if(response.responseJSON.errors.phone[0] === 'The phone has already been taken.') {
-                                $('#phone_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#phone_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#phone').focus(function(){
-                                $('#phone').removeClass('is-invalid');
-                                $('#phone_error').text('');
-                            })
-                        };
-                        if(response.responseJSON.errors.phone) {
-                            $('#bank').addClass('is-invalid');
-                            $('#bank').focus();
-                            if(response.responseJSON.errors.bank[0] === 'The bank has already been taken.') {
-                                $('#bank_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#bank_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#bank').focus(function(){
-                                $('#bank').removeClass('is-invalid');
-                                $('#bank_error').text('');
-                            })
-                        };
-                        if(response.responseJSON.errors.phone) {
-                            $('#account_name').addClass('is-invalid');
-                            $('#account_name').focus();
-                            if(response.responseJSON.errors.account_name[0] === 'The account name has already been taken.') {
-                                $('#account_name_error').text('ឈ្មោះគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#account_name_error').text('សូមពិនិត្យមើលឈ្មោះគណនី របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#account_name').focus(function(){
-                                $('#account_name').removeClass('is-invalid');
-                                $('#account_name_error').text('');
-                            })
-                        };
-                        if(response.responseJSON.errors.phone) {
-                            $('#account_no').addClass('is-invalid');
-                            $('#account_no').focus();
-                            if(response.responseJSON.errors.account_no[0] === 'The account no has already been taken.') {
-                                $('#account_no_error').text('លេខគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#account_no_error').text('សូមពិនិត្យមើលលេខគណនី របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#account_no').focus(function(){
-                                $('#account_no').removeClass('is-invalid');
-                                $('#account_no_error').text('');
-                            })
-                        };
-                        if(response.responseJSON.errors.ref_id) {
-                            $('#ref_id').addClass('is-invalid');
-                            $('#ref_id').focus();
-                            if(response.responseJSON.errors.ref_id[0] === 'The ref id has already been taken.') {
-                                $('#ref_id_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#ref_id_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#ref_id').focus(function(){
-                                $('#ref_id').removeClass('is-invalid');
-                                $('#ref_id_error').text('');
-                            });
-                        };
-                        if(response.responseJSON.errors.ref_id) {
-                            $('#trandsaction').addClass('is-invalid');
-                            $('#trandsaction').focus();
-                            if(response.responseJSON.errors.trandsaction[0] === 'The ref id has already been taken.') {
-                                $('#trandsaction_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                            }else{
-                                $('#trandsaction_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
-                            };
-                            $('#trandsaction').focus(function(){
-                                $('#trandsaction').removeClass('is-invalid');
-                                $('#trandsaction_error').text('');
-                            });
-                        };
                     }
-                });
+                },
+                error: function(response) {
+                    console.log(response);
+                    if(response.responseJSON.errors.manager_name) {
+                        $('#manager_name').addClass('is-invalid');
+                        $('#manager_name').focus();
+                        $('#manager_name_error').text('សូមពិនិត្យមើលឈ្មោះ របស់អ្នកឡើងវិញ។');
+                        $('#manager_name').focus(function(){
+                            $('#manager_name').removeClass('is-invalid');
+                            $('#manager_name_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.team_name) {
+                        $('#team_name').addClass('is-invalid');
+                        $('#team_name').focus();
+                        $('#team_name_error').text('សូមពិនិត្យមើលឈ្មោះក្រុម របស់អ្នកឡើងវិញ។');
+                        $('#team_name').focus(function(){
+                            $('#team_name').removeClass('is-invalid');
+                            $('#team_name_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.dob) {
+                        $('#dob').addClass('is-invalid');
+                        $('#dob').focus();
+                        $('#dob_error').text('សូមពិនិត្យមើលថ្ងៃខែឆ្នាំកំណើត របស់អ្នកឡើងវិញ។');
+                        $('#dob').change(function(){
+                            $('#dob').removeClass('is-invalid');
+                            $('#dob_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.gender) {
+                        $('input[name="gender"]').addClass('is-invalid');
+                        $('input[name="gender"]').focus();
+                        $('#gender_error').text('សូមជ្រើសរើសភេទ ឱ្យបានត្រឹមត្រូវ។');
+                        $('input[name="gender"]').change(function(){
+                            $('#gender').removeClass('is-invalid');
+                            $('#gender_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.fan_club) {
+                        $('#fan_club').addClass('is-invalid');
+                        $('#fan_club').focus();
+                        $('#fan_club_error').text('សូមជ្រើសរើសក្លឹបគាំទ្រ ឱ្យបានត្រឹមត្រូវ។');
+                        $('#fan_club').change(function(){
+                            $('#fan_club').removeClass('is-invalid');
+                            $('#fan_club_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.email) {
+                        $('#email').addClass('is-invalid');
+                        $('#email').focus();
+                        if(response.responseJSON.errors.email[0] === 'The email has already been taken.') {
+                            $('#email_error').text('អ៊ីម៉ែលនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#email_error').text('សូមពិនិត្យមើលអ៊ីម៉ែល របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#email').focus(function(){
+                            $('#email').removeClass('is-invalid');
+                            $('#email_error').text('');
+                        })
+                    };
+                    if(response.responseJSON.errors.phone) {
+                        $('#phone').addClass('is-invalid');
+                        $('#phone').focus();
+                        if(response.responseJSON.errors.phone[0] === 'The phone has already been taken.') {
+                            $('#phone_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#phone_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#phone').focus(function(){
+                            $('#phone').removeClass('is-invalid');
+                            $('#phone_error').text('');
+                        })
+                    };
+                    if(response.responseJSON.errors.phone) {
+                        $('#bank').addClass('is-invalid');
+                        $('#bank').focus();
+                        if(response.responseJSON.errors.bank[0] === 'The bank has already been taken.') {
+                            $('#bank_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#bank_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#bank').focus(function(){
+                            $('#bank').removeClass('is-invalid');
+                            $('#bank_error').text('');
+                        })
+                    };
+                    if(response.responseJSON.errors.phone) {
+                        $('#account_name').addClass('is-invalid');
+                        $('#account_name').focus();
+                        if(response.responseJSON.errors.account_name[0] === 'The account name has already been taken.') {
+                            $('#account_name_error').text('ឈ្មោះគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#account_name_error').text('សូមពិនិត្យមើលឈ្មោះគណនី របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#account_name').focus(function(){
+                            $('#account_name').removeClass('is-invalid');
+                            $('#account_name_error').text('');
+                        })
+                    };
+                    if(response.responseJSON.errors.phone) {
+                        $('#account_no').addClass('is-invalid');
+                        $('#account_no').focus();
+                        if(response.responseJSON.errors.account_no[0] === 'The account no has already been taken.') {
+                            $('#account_no_error').text('លេខគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#account_no_error').text('សូមពិនិត្យមើលលេខគណនី របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#account_no').focus(function(){
+                            $('#account_no').removeClass('is-invalid');
+                            $('#account_no_error').text('');
+                        })
+                    };
+                    if(response.responseJSON.errors.ref_id) {
+                        $('#ref_id').addClass('is-invalid');
+                        $('#ref_id').focus();
+                        if(response.responseJSON.errors.ref_id[0] === 'The ref id has already been taken.') {
+                            $('#ref_id_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                        }else{
+                            $('#ref_id_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                        };
+                        $('#ref_id').focus(function(){
+                            $('#ref_id').removeClass('is-invalid');
+                            $('#ref_id_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.transaction) {
+                        $('#transaction').addClass('is-invalid');
+                        $('#transaction').focus();
+                        if(response.responseJSON.errors.transaction[0] === 'The transaction field is required.') {
+                            $('#transaction_error').text('សូមពិនិត្យមើលរូបប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                        }else{
+                            $('#transaction_error').text('សូមពិនិត្យមើលរូបប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                        };
+                    };
+                }
+            });
             })
         });
     </script>

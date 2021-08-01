@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 
 Route::get('/', [CandidatesController::class, 'register']);
 Route::post('registering', [CandidatesController::class, 'registering'])->name('registering');
+Route::post('candidates/media', [CandidatesController::class, 'storeMedia'])->name('candidates.storeMedia');
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.candidates.index')->with('status', session('status'));
