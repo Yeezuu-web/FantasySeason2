@@ -197,7 +197,7 @@
             </div>
         </div>
         <footer class="main-footer" style="margin-left: 0px;">
-            <div class="float-right d-none d-sm-block">
+            <div class="float-right">
                 <b>CBS Digital</b>
             </div>
             <strong> &copy;</strong> {{ trans('global.allRightsReserved') }}
