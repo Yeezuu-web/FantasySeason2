@@ -25,7 +25,7 @@
         <div class="container mb-5">
             <div class="row">
                 <div class="col-md-10 mx-auto">
-                    <img class="banner" src="{{ asset('dist/img/FantasySeason2BannerWebsite.jpg') }}" alt="banner">
+                    <img class="banner" src="{{ asset('dist/img') }}/{{ $club }}.jpg" alt="banner">
                 </div>
                 <div class="col-md-10 mx-auto">
                     <div class="card">
@@ -79,23 +79,23 @@
                                                 
                                                 <select class="form-control" name="fan_club" id="fan_club">
                                                     <option value="">Select Favorite Team</option>
-                                                    <option value="Arsenal">Arsenal</option>
+                                                    <option value="Arsenal" {{ $fanClub == 'Arsenal' ? 'selected' : ''}}>Arsenal</option>
                                                     <option value="Aston Villa">Aston Villa</option>
                                                     <option value="Brentford">Brentford</option>
                                                     <option value="Brighton">Brighton</option>
                                                     <option value="Burnley">Burnley</option>
-                                                    <option value="Chelsea">Chelsea</option>
+                                                    <option value="Chelsea" {{ $fanClub == 'Chelsea' ? 'selected' : ''}}>Chelsea</option>
                                                     <option value="Crystal Palace">Crystal Palace</option>
                                                     <option value="Everton">Everton</option>
-                                                    <option value="Leeds United">Leeds United</option>
+                                                    <option value="Leeds United" >Leeds United</option>
                                                     <option value="Leicester City">Leicester City</option>
-                                                    <option value="Liverpool">Liverpool</option>
-                                                    <option value="Man City">Man City</option>
-                                                    <option value="Man United">Man United</option>
+                                                    <option value="Liverpool" {{ $fanClub == 'Liverpool' ? 'selected' : ''}}>Liverpool</option>
+                                                    <option value="Man City" {{ $fanClub == 'Man City' ? 'selected' : ''}}>Man City</option>
+                                                    <option value="Man United" {{ $fanClub == 'Man United' ? 'selected' : ''}}>Man United</option>
                                                     <option value="Newcastle">Newcastle</option>
                                                     <option value="Norwich City">Norwich City</option>
                                                     <option value="Southampton">Southampton</option>
-                                                    <option value="Tottenham Hotspur">Tottenham Hotspur</option>
+                                                    <option value="Tottenham Hotspur" {{ $fanClub == 'Southampton' ? 'selected' : ''}}>Tottenham Hotspur</option>
                                                     <option value="Watford">Watford</option>
                                                     <option value="West Ham">West Ham</option>
                                                     <option value="Wolves">Wolves</option>
@@ -157,19 +157,6 @@
                                             </ul>
                                         </div>
                                         
-                                        <div class="form-check ml-4 mb-5">
-                                            <input type="checkbox" class="form-check-input" value="1" id="redeem">
-                                            <label class="form-check-label" for="redeem">Redeem Code</label>
-                                            <span class="invalid-feedback" id="redeem-error"></span>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="phone" class="required kh mb-0"><span class="text-danger">*</span> លេខទូរស័ព្ទ / Phone</label>
-                                            
-                                            <input class="form-control" type="text" name="phone" id="phone">
-                                            <span class="invalid-feedback" id="phone_error"></span>
-                                        </div>
-
                                         <div class="form-check ml-4 mb-5">
                                             <input type="checkbox" class="form-check-input" value="1" id="term">
                                             <label class="form-check-label" for="term">យល់ព្រមទទួលយកលក្ខន្តិកទាំងអស់ខាងលើ</label>

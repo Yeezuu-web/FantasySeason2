@@ -74,4 +74,30 @@ class CandidatesController extends Controller
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
+
+    public function registerFan($club)
+    {
+        
+        $data = [
+            'mancity' => 'Man City',
+            'chelsea' => 'Chelsea',
+            'manunited' => 'Man United',
+            'arsenal' => 'Arsenal',
+            'liverpool' => 'Liverpool'
+        ];
+
+        $fanClub = '';
+
+        if(array_key_exists($club, $data)){
+            foreach($data as $key => $d){
+                if($club == $key){
+                    $fanClub = $d;
+                }
+            }
+        }else{
+            return redirect()->route('candidate');
+        }
+
+        return view('frontend.register-fan', compact('fanClub', 'club'));
+    }
 }

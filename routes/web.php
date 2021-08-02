@@ -10,7 +10,8 @@ use App\Http\Controllers\Admin\UserAlertsController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 
-Route::get('/', [CandidatesController::class, 'register']);
+Route::get('/', [CandidatesController::class, 'register'])->name('candidate');
+Route::get('register-fan/{club}', [CandidatesController::class, 'registerFan']);
 Route::post('registering', [CandidatesController::class, 'registering'])->name('registering');
 Route::post('candidates/media', [CandidatesController::class, 'storeMedia'])->name('candidates.storeMedia');
 Route::get('/home', function () {

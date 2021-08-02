@@ -41,12 +41,13 @@ class Candidate extends Model implements HasMedia
         'account_no',
         'ref_id',
         'status',
+        'term'
     ];
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
-        $this->addMediaConversion('preview')->fit('crop', 120, 120);
+        $this->addMediaConversion('thumb')->fit('crop', 100, 100);
+        $this->addMediaConversion('preview')->fit('crop', 150, 150);
     }
     
     public function getTransactionAttribute()

@@ -1,21 +1,23 @@
 @font-face {
     font-family: Khmerkulen;
-    src: url(http://127.0.0.1:8000/dist/fonts/KhmerOSKoulen.ttf);
+    src: url(https://pluskh.com.kh/fantasy/public/dist/fonts/KhmerOSKoulen.ttf);
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    font-family: Khmerkulen !important;
-    font-size: 0.885rem !important;
+    font-family: 'Battambang';
+    font-size: 0.85rem !important;
     font-weight: 100;
+    font-color: black;
+}
+.form-control{
+    font-size:0.9rem;
 }
 body{
     -webkit-user-select: none;
     background-color: #37174f;
+    font-family: 'Battambang';
 }
-.kh{
-    font-family: Khmerkulen;
-}
+
 .kh1{
-    font-family: Khmerkulen;
     font-weight: 100 !important;
 }
 .required{
@@ -46,31 +48,24 @@ body{
     margin: 0px;
     font-weight: 500;
     font-size: 1.35rem;
-    font-family: Khmerkulen;
 }
 ul{
     list-style: none;
     padding-left: 20px !important;
 }
 ul li{
-    font-weight: 100;
-    font-size: 1rem;
-    font-family: Khmerkulen;
-    letter-spacing: 1.5px;
-    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #000;
+    letter-spacing: 0.6px;
     line-height: 30px;
 }
 .note{
-    font-weight: 100;
-    font-size: 1.2rem;
-    font-family: Khmerkulen;
-    letter-spacing: 1.5px;
-    line-height: 40px;
+    font-size: 0.95rem;
     text-align: center;
 }
 .btn-kh{
     color: #fff;
-    font-family: Khmerkulen;
     font-size: 1.5rem;
     background-color: #37174f;
     transition: 0.3s ease-in;
@@ -81,8 +76,7 @@ ul li{
     transform: scale(1.03);
 }
 .invalid-feedback{
-    margin-top: 5px;
-    font-family: Khmerkulen;
+    margin-top: 8px;
     color: rgb(216, 25, 25);
     font-size: 0.8rem;
     font-weight: 100;
@@ -90,14 +84,12 @@ ul li{
 }
 .feedback{
     margin-top: 5px;
-    font-family: Khmerkulen;
     color: rgb(216, 25, 25);
     font-size: 0.8rem;
     font-weight: 100;
     letter-spacing: 1.3px;
 }
 .modal-title{
-    font-family: Khmerkulen;
     font-size: 1.5rem;
     font-weight: 500;
     letter-spacing: 1.5px;
@@ -111,11 +103,16 @@ ul li{
 }
 #d-name{
     padding-top: 15px;
-    font-family: Khmerkulen;
     font-size: 0.9rem;
     font-weight: 100;
     letter-spacing: 1.2px;
 }
 td, th{
     border: none !important;
+}
+@media only screen and (max-width: 768px) {
+    body{
+        /*font-family:unset;*/
+        font-family: 'Battambang';
+    }
 }

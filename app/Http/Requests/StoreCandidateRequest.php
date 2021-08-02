@@ -52,19 +52,12 @@ class StoreCandidateRequest extends FormRequest
             'bank'         => [
                 'required',
             ], 
-            'account_name'         => [
-                'required',
-            ], 
-            'account_no'         => [
-                'required',
-            ], 
-            'ref_id'         => [
-                'required',
-                'unique:candidates'
-            ], 
             'transaction'=> [
                 'required',
             ], 
+            'term'      => [
+                'required',
+            ]
         ];
     }
 }
