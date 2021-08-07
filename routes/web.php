@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\FilesController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\admin\ApprovalController;
 use App\Http\Controllers\Admin\CandidatesController;
 use App\Http\Controllers\Admin\FileImportController;
 use App\Http\Controllers\Admin\UserAlertsController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 
 Route::get('/', [CandidatesController::class, 'register'])->name('candidate');
+Route::get('/thankyoulffaing4335', function(){return view('frontend.thankyou');})->name('thankyou');
 Route::get('register-fan/{club}', [CandidatesController::class, 'registerFan']);
 Route::post('registering', [CandidatesController::class, 'registering'])->name('registering');
 Route::post('candidates/media', [CandidatesController::class, 'storeMedia'])->name('candidates.storeMedia');
@@ -46,6 +48,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     //Candidate
     Route::delete('candidates/destroy', [CandidatesController::class , 'massDestroy'])->name('candidates.massDestroy');
     Route::resource('candidates', CandidatesController::class)->except(['create', 'store']);
+
+    Route::get('approval/index', [ApprovalController::class, 'index'])->name('approval.index');
+    Route::post('approval/update/{id}', [ApprovalController::class, 'update'])->name('approval.update');
+    Route::post('approval/reject/{id}', [ApprovalController::class, 'reject'])->name('approval.reject');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

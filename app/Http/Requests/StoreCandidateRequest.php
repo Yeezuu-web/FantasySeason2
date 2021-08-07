@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Candidate;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCandidateRequest extends FormRequest
 {
@@ -47,7 +48,11 @@ class StoreCandidateRequest extends FormRequest
             ], 
             'phone'         => [
                 'required',
-                'unique:candidates'
+                Rule::unique('candidates')
+                ->ignore($this->candidate)
+                ->where(function($query) {
+                    $query->where('status', '!=', '2');
+                })
             ], 
             'bank'         => [
                 'required',

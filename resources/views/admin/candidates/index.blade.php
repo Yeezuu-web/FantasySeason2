@@ -1,6 +1,98 @@
 @extends('layouts.admin')
+@section('styles')
+<style>
+.modal{
+    background-color: #071b2dcf;
+}
+    /* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #ff0000;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
 
+.close:hover,
+.close:focus {
+  color: rgb(19, 1, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.imgg{
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    z-index: 1;
+}
+.imgg:hover{
+    transform: scale(5, 8);  
+}
+</style>
+@endsection
 @section('content')
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-exclamation-triangle"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Candidate Pendding</span>
+                <span class="info-box-number">
+                  {{ $candidates ? $candidates->where('status', '=', 0)->count() : '' }}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Candidate Rejected</span>
+                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 2)->count() : '' }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Candidate Approved</span>
+                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 1)->count() : '' }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Candidate</span>
+                <span class="info-box-number">{{ $candidates ? $candidates->count() : '' }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
 <div class="card">
     <div class="card-header">
         Candidate
@@ -8,23 +100,37 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-hover datatable datatable-candidate">
+            <!--<table class="float-right mb-4 col-md-4">-->
+            <!--    <thead>-->
+            <!--      <tr>-->
+            <!--        <td>-->
+            <!--          <input type="text" class="form-control form-control-sm filter-input" data-column="12" placeholder="Search by Bank Account...">-->
+            <!--        </td>-->
+            <!--        <td>-->
+            <!--      </tr>-->
+            <!--    </thead>-->
+            <!-- </table>-->
+            <table class=" table table-bordered table-hover ajaxTable datatable datatable-Candidate">
                 <thead>
                     <tr>
                         <th>
 
                         </th>
                         <th>
-                            ID
+                            Full-Name
                         </th>
                         <th>
-                            Full-Name
+                            ID
                         </th>
                         <th>
                             Team Name
                         </th>
                         <th>
                             Fan Club
+                        </th>
+                        
+                        <th>
+                            Link By
                         </th>
                         <th>
                             DOB
@@ -45,13 +151,7 @@
                             Bank
                         </th>
                         <th>
-                            Name ACC
-                        </th>
-                        <th>
-                            Account No
-                        </th>
-                        <th>
-                            Ref ID
+                            Bank Account
                         </th>
                         <th>
                             Transaction
@@ -64,101 +164,25 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach($candidates as $key => $candidate)
-                        <tr data-entry-id="{{ $candidate->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $candidate->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->manager_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->team_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->fan_club ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->dob ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->gender ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->Email ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->phone ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->created_at ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->Bank ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->account_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->account_no ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->ref_id ?? '' }}
-                            </td>
-                            <td>
-                                @if($candidate->transaction)
-                                    <a href="{{ $candidate->transaction->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $candidate->transaction->getUrl('thumb') }}">
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                @if($candidate->status === 0)
-                                    <span class="badge badge-info badge-sm">Processing</span>
-                                @endif
-                                @if($candidate->status === 1)
-                                    <span class="badge badge-success badge-sm">Aproved</span>
-                                @endif
-                                @if($candidate->status === 2)
-                                    <span class="badge badge-danger badge-sm">Rejected</span>
-                                @endif
-                            </td>
-                            <td>
-                                @can('candidate_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.candidates.show', $candidate->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                                @can('candidate_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.candidates.edit', $candidate->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('candidate_delete')
-                                    <form action="{{ route('admin.candidates.destroy', $candidate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
+                
             </table>
         </div>
     </div>
 </div>
 @endsection
 @section('scripts')
+<script>
+  function showimg(param){
+    let url = $(param).attr('src');
+    let name = $(param).attr('alt');
+      Swal.fire({
+      imageUrl: url,
+      imageWidth: '70%',
+      imageHeight: '70%',
+      imageAlt: name
+      })
+  }
+</script>
 <script>
     $(function() {
       let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
@@ -188,7 +212,7 @@
                 searchable: false,
                 targets: -1
             }, {
-            targets: [0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16],
+            targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             visible: true,
             }, { 
             targets: '_all',
@@ -200,7 +224,7 @@
         },
         order: [],
         scrollX: true,
-        pageLength: 100,
+        pageLength: 25,
         dom: 'lBfrtip<"actions">',
         buttons: [
           {
@@ -229,7 +253,7 @@
             className: 'btn-default',
             text: copyButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             }
           },
           {
@@ -237,7 +261,7 @@
             className: 'btn-default',
             text: csvButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
+              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             }
           },
           {
@@ -245,23 +269,22 @@
             className: 'btn-default',
             text: excelButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
-            }
-          },
-          {
-            extend: 'pdf',
-            className: 'btn-default',
-            text: pdfButtonTrans,
-            exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
-            }
+              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            },
+            customizeData: function ( data ) {
+                for (var i=0; i<data.body.length; i++){
+                    for (var j=0; j<data.body[i].length; j++ ){
+                        data.body[i][j] = '\u200C' + data.body[i][j];
+                    }
+                }
+            }    
           },
           {
             extend: 'print',
             className: 'btn-default',
             text: printButtonTrans,
             exportOptions: {
-              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
+              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10],
             }
           },
           {
@@ -280,7 +303,7 @@
 
 </script>
 <script>
-    $(function () {
+  $(function () {
     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
     @can('candidate_delete')
         let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
@@ -312,18 +335,47 @@
         dtButtons.push(deleteButton)
     @endcan
 
-    $.extend(true, $.fn.dataTable.defaults, {
-        orderCellsTop: true,
-        order: [[ 1, 'desc' ]],
-        pageLength: 100,
-    });
-    let table = $('.datatable-candidate:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+    let dtOverrideGlobals = {
+    buttons: dtButtons,
+    processing: true,
+    serverSide: true,
+    retrieve: true,
+    aaSorting: [],
+    ajax: "{{ route('admin.candidates.index') }}",
+    columns: [
+        { data: 'placeholder', name: 'placeholder' },
+        { data: 'manager_name', name: 'Manager Name' },
+        { data: 'id', name: 'ID' },
+        { data: 'team_name', name: 'Team Name' },
+        { data: 'fan_club', name: 'Fan Club' },
+        { data: 'link_by', name: 'Link By' },
+        { data: 'dob', name: 'DOB' },
+        { data: 'gender', name: 'Gender' },
+        { data: 'email', name: 'Email' },
+        { data: 'phone', name: 'Phone' },
+        { data: 'apply_date', name: 'Apply Date' },
+        { data: 'bank', name: 'Bank' },
+        { data: 'account_no', name: 'Bank Account' },
+        { data: 'transaction', name: 'Transaction', sortable: false, searchable: false  },
+        { data: 'status', name: 'Status ' },
+        { data: 'actions', name: '{{ trans('global.actions') }}' }
+    ],
+    orderCellsTop: true,
+    order: [[ 2, 'desc' ]],
+    pageLength: 25,
+    };
+    let table = $('.datatable-Candidate').DataTable(dtOverrideGlobals);
     $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });
-  
-})
-
+      
+      $('.filter-input').keyup(function(){
+        table.column( $(this).data('column') )
+          .search( $(this).val() )
+          .draw()
+      })
+    
+  })
 </script>
 @endsection

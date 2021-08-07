@@ -7,6 +7,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="https://pluskh.com.kh/fantasy/public/dist/img/cbsfantasylogo.png" type="image/x-icon">
     <title>CBS Fantasy League</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
@@ -18,10 +19,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Battambang&display=swap" rel="stylesheet"> 
     <link href="{{ asset('css/custom1.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/loading.css') }}" rel="stylesheet" />
 </head>
 
 <body style="height: auto;">
     <div class="wrapper">
+        <div class="loading" style="z-index: 1;" hidden>
+            <div class='uil-ring-css' style='transform:scale(0.79);'>
+              <div></div>
+            </div>
+        </div>
         <div class="container mb-5">
             <div class="row">
                 <div class="col-md-10 mx-auto">
@@ -116,8 +123,8 @@
                                                 <ul style="color: #000; user-select: text;">
                                                     <li>* ឈ្មោះ : <strong>Cambodia Broadcasting Service</strong></li>
                                                     <li>* <img width="30px" src="{{ asset('dist/img/aba.png') }}" /> ABA: <strong>000881867</strong></li>
-                                                    <li>* <img width="30px" src="{{ asset('dist/img/wing.png') }}" /> Wing: <strong>000881867</strong></li>
-                                                    <li>* <img width="30px" src="{{ asset('dist/img/jtrust.png') }}" /> J-Trust Royal Bank: <strong>000881867</strong></li>
+                                                    <li>* <img width="30px" src="{{ asset('dist/img/wing.png') }}" /> Wing: <strong>03547790</strong></li>
+                                                    <li>* <img width="30px" src="{{ asset('dist/img/jtrust.png') }}" /> J-Trust Royal Bank: <strong>116345</strong></li>
                                                 </ul>
                                         </div>
                                         <div class="col-md-6 mb-3">
@@ -135,6 +142,11 @@
                                                     <span class="invalid-feedback" id="bank_error"></span>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="account_no" class="required kh mb-0"><span class="text-danger">*</span> លេខគណនីអ្នកផ្ញើ / Sender Bank Account Number </label>
+                                                    <input class="form-control" type="number" min="0" name="account_no" id="account_no" placeholder="លេខគណនី">
+                                                    <span class="invalid-feedback" id="account_no_error"></span>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="transaction" class="required kh mb-0"><span class="text-danger">*</span> រូបភាពប្រតិបត្តិការ</label>
                                                     <span>/ Transaction</span>
                                                     <div class="needsclick dropzone" id="transaction-dropzone">
@@ -149,27 +161,14 @@
                                                 <li>1. អ្នកចូលរួមលេង ត្រូវមានសញ្ជាតិខ្មែរ និងមានអាយុចាប់ពី <strong class="text-danger">១២ឆ្នាំ</strong>ឡើងទៅ</li>
                                                 <li>2. អ្នកចូលរួមលេង ត្រូវមានគណនីតែ <strong class="text-danger">មួយ(១)</strong>ប៉ុណ្ណោះក្នុង <strong style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS Fantasy League</strong></li>
                                                 <li>3. អ្នកឈ្នះ ត្រូវមកទទួលរង្វាន់ដោយផ្ទាល់ និងបង្ហាញខ្លួនក្នុងកម្មវិធី <strong class="text-danger" style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS Fantasy League</strong></li>
-                                                <li>4. អ្នកចូលរួមលេង មានសិទ្ធឈ្នះរង្វាន់ប្រចាំសប្តាហ៍ច្រើនដងដោយមិនកំណត់ចំនួនដង</li>
-                                                <li>5. អ្នកចូលរួមលេងគ្រប់រូបមានសិទ្ធឈ្នះរង្វាន់ធំប្រចាំំឆ្នាំ លើកលែងតែបុគ្គលិក <strong class="text-danger" style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS</strong> ប៉ុណ្ណោះ</li>
+                                                <li>4. អ្នកចូលរួមលេង មានសិទិ្ធឈ្នះរង្វាន់ប្រចាំសប្តាហ៍និងរង្វាន់ប្រចាំខែ ច្រើនដងដោយមិនកំណត់ចំនួនដងចំនួនដង</li>
+                                                <li>5. អ្នកចូលរួមលេងគ្រប់រូបមានសិទិ្ធឈ្នះរង្វាន់ ប្រចាំ សប្តាហ៍  រង្វាន់ប្រចាំខែ និងរង្វាន់ធំប្រចាំំឆ្នាំ លើកលែងតែបុគ្គលិក <strong class="text-danger" style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS</strong> ប៉ុណ្ណោះ</li>
                                                 <li>6. អ្នកចូលរួមលេង ត្រូវចុះឈ្មោះដោយប្រើ​ <strong class="text-danger">ឈ្មោះពិត</strong> និងដាក់ឈ្មោះក្រុម
                                                     ឱ្យបានត្រឹមត្រូវដោយមិនប៉ះពាល់ដល់សេចក្តីថ្លៃថ្នូរបស់សង្គម</li>
                                                 <li>7. <strong class="text-danger" style="font-weight: 500; font-family: 'Roboto', sans-serif;">CBS Fantasy</strong>​ មានសិទ្ធលុបចោល និងមិនផ្តល់រង្វាន់ដល់គណនីណាដែលមិនគោរពតាមលក្ខន្តិកៈ ហើយជ្រើសរើសអ្នកដែលមានពិន្ទុខ្ពស់បន្ទាប់ដែលបានគោរពលក្ខន្តិកៈមកជំនួស។</li>
                                             </ul>
                                         </div>
                                         
-                                        <div class="form-check ml-4 mb-5">
-                                            <input type="checkbox" class="form-check-input" value="1" id="redeem">
-                                            <label class="form-check-label" for="redeem">Redeem Code</label>
-                                            <span class="invalid-feedback" id="redeem-error"></span>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="phone" class="required kh mb-0"><span class="text-danger">*</span> លេខទូរស័ព្ទ / Phone</label>
-                                            
-                                            <input class="form-control" type="text" name="phone" id="phone">
-                                            <span class="invalid-feedback" id="phone_error"></span>
-                                        </div>
-
                                         <div class="form-check ml-4 mb-5">
                                             <input type="checkbox" class="form-check-input" value="1" id="term">
                                             <label class="form-check-label" for="term">យល់ព្រមទទួលយកលក្ខន្តិកទាំងអស់ខាងលើ</label>
@@ -237,7 +236,7 @@
         </div>
         <footer class="main-footer" style="margin-left: 0px;">
             <div class="float-right">
-                <b>CBS Digital</b>
+                <b>CBS</b>
             </div>
             <strong> &copy;</strong> {{ trans('global.allRightsReserved') }}
         </footer>
@@ -251,7 +250,7 @@
     <script>
         Dropzone.options.transactionDropzone = {
         url: '{{ route('candidates.storeMedia') }}',
-        maxFilesize: 2, // MB
+        maxFilesize: 10, // MB
         acceptedFiles: '.jpeg,.jpg,.png,.gif',
         maxFiles: 1,
         addRemoveLinks: true,
@@ -259,9 +258,9 @@
           'X-CSRF-TOKEN': "{{ csrf_token() }}"
         },
         params: {
-          size: 2,
-          width: 4096,
-          height: 4096
+          size: 10,
+          width: 3451,
+          height: 6133
         },
         success: function (file, response) {
           $('form').find('input[name="transaction"]').remove()
@@ -351,12 +350,13 @@
             let dob = $('#dob').val();
             let gender = $('#gender').val();
             let fan_club = $('#fan_club').val();
+            let linkby = $('#linkby').val();
             let email = $('#email').val();
             let phone = $('#phone').val();
             let bank = $('#bank').val();
             let account_name = $('#account_name').val();
-            let account_no = $('#account_no').val();
             let ref_id = $('#ref_id').val();
+            let account_no = $('#account_no').val();
             let term = $('#term:checked').val();
             let transaction = $('input[name="transaction"]').val();
             let _token = $('input[name="_token"]').val();
@@ -370,41 +370,29 @@
                     dob: dob,
                     gender: gender,
                     fan_club: fan_club,
+                    linkby: linkby,
                     phone: phone,
                     email: email,
                     bank: bank,
-                    account_name: account_name,
                     account_no: account_no,
-                    ref_id: ref_id,
                     term: term,
                     transaction: transaction,
                 },
+                beforeSend: function() {
+                    $('#success').modal('toggle');
+                    $('.loading').removeAttr('hidden');
+                },
                 success: function (response) {
                     if(response.id){
-                        let name = response.manager_name;
-                        // let team = response.team_name;
-                        // let phone = response.phone;
-                        // let email = response.email;
-                        Swal.fire(
-                            'សូមអគុណ!',
-                            name+' បានចុះឈ្មោះជោគជ័យ',
-                            'success'
-                        )
-                        $('#success').modal('toggle');
-                        setTimeout(function(){ location.reload(); }, 3000);
-                        // $('#success').modal('toggle');
-                        // $('#d-name').text(name);
-                        // $('#d-team').text(team);
-                        // $('#d-phone').text(phone);
-                        // $('#d-email').text(email);
-                        
+                        location.href = "{{route('thankyou')}}" ; 
                     }
                 },
+                complete: function(){
+                    $('.loading').attr('hidden', 'true');
+                },
                 error: function(response) {
-                    console.log(response);
-                    if(response.responseJSON.errors){
-                        $('#success').modal('toggle');
-                    }
+                    $('.loading').attr('hidden', 'true');
+                    $('#success').modal('hide');
                     if(response.responseJSON.errors.manager_name) {
                         $('#manager_name').addClass('is-invalid');
                         $('#manager_name').focus();
@@ -412,6 +400,15 @@
                         $('#manager_name').focus(function(){
                             $('#manager_name').removeClass('is-invalid');
                             $('#manager_name_error').text('');
+                        });
+                    };
+                    if(response.responseJSON.errors.manager_name) {
+                        $('#account_no').addClass('is-invalid');
+                        $('#account_no').focus();
+                        $('#account_no_error').text('សូមពិនិត្យមើល លេខគណនីឡើងវិញ');
+                        $('#account_no').focus(function(){
+                            $('#account_no').removeClass('is-invalid');
+                            $('#account_no_error').text('');
                         });
                     };
                     if(response.responseJSON.errors.term) {
@@ -485,33 +482,21 @@
                             $('#phone_error').text('');
                         })
                     };
-                    if(response.responseJSON.errors.phone) {
+                    
+                    if(response.responseJSON.errors.bank) {
                         $('#bank').addClass('is-invalid');
                         $('#bank').focus();
                         if(response.responseJSON.errors.bank[0] === 'The bank has already been taken.') {
-                            $('#bank_error').text('លេខទូរស័ព្ទនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                            $('#bank_error').text('សូមជ្រើសរើសធានាគា');
                         }else{
-                            $('#bank_error').text('សូមពិនិត្យមើលលេខទូរស័ព្ទ របស់អ្នកឡើងវិញ។');
+                            $('#bank_error').text('សូមជ្រើសរើសធានាគារ។');
                         };
                         $('#bank').focus(function(){
                             $('#bank').removeClass('is-invalid');
                             $('#bank_error').text('');
                         })
                     };
-                    if(response.responseJSON.errors.phone) {
-                        $('#account_name').addClass('is-invalid');
-                        $('#account_name').focus();
-                        if(response.responseJSON.errors.account_name[0] === 'The account name has already been taken.') {
-                            $('#account_name_error').text('ឈ្មោះគណនីនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
-                        }else{
-                            $('#account_name_error').text('សូមពិនិត្យមើលឈ្មោះគណនី របស់អ្នកឡើងវិញ។');
-                        };
-                        $('#account_name').focus(function(){
-                            $('#account_name').removeClass('is-invalid');
-                            $('#account_name_error').text('');
-                        })
-                    };
-                    if(response.responseJSON.errors.phone) {
+                    if(response.responseJSON.errors.account_no) {
                         $('#account_no').addClass('is-invalid');
                         $('#account_no').focus();
                         if(response.responseJSON.errors.account_no[0] === 'The account no has already been taken.') {
@@ -524,18 +509,14 @@
                             $('#account_no_error').text('');
                         })
                     };
-                    if(response.responseJSON.errors.ref_id) {
-                        $('#ref_id').addClass('is-invalid');
-                        $('#ref_id').focus();
-                        if(response.responseJSON.errors.ref_id[0] === 'The ref id has already been taken.') {
-                            $('#ref_id_error').text('លេខប្រតិបត្តិការនេះ បានចុះឈ្មោះម្តងហើយ។​ សូមពិនិត្យឡើងវិញ។');
+                    if(response.responseJSON.errors.transaction) {
+                        $('#transaction').addClass('is-invalid');
+                        $('#transaction').focus();
+                        if(response.responseJSON.errors.transaction[0] === 'The transaction field is required.') {
+                            $('#transaction_error').text('សូមពិនិត្យមើលរូបប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
                         }else{
-                            $('#ref_id_error').text('សូមពិនិត្យមើលលេខប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
+                            $('#transaction_error').text('សូមពិនិត្យមើលរូបប្រតិបត្តិការ​ របស់អ្នកឡើងវិញ។');
                         };
-                        $('#ref_id').focus(function(){
-                            $('#ref_id').removeClass('is-invalid');
-                            $('#ref_id_error').text('');
-                        });
                     };
                     if(response.responseJSON.errors.transaction) {
                         $('#transaction').addClass('is-invalid');
