@@ -224,6 +224,10 @@
         },
         order: [],
         scrollX: true,
+        stateSave: true,
+        paging: true,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pagingType: "full_numbers",
         pageLength: 25,
         dom: 'lBfrtip<"actions">',
         buttons: [
@@ -265,19 +269,11 @@
             }
           },
           {
-            extend: 'excel',
             className: 'btn-default',
             text: excelButtonTrans,
-            exportOptions: {
-              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            },
-            customizeData: function ( data ) {
-                for (var i=0; i<data.body.length; i++){
-                    for (var j=0; j<data.body[i].length; j++ ){
-                        data.body[i][j] = '\u200C' + data.body[i][j];
-                    }
-                }
-            }    
+            action: function( e, dt ){
+              location.href = '/admin/candidates/export';
+            }
           },
           {
             extend: 'print',
@@ -337,31 +333,35 @@
 
     let dtOverrideGlobals = {
     buttons: dtButtons,
-    processing: true,
+    bProcessing: true,
     serverSide: true,
     retrieve: true,
     aaSorting: [],
     ajax: "{{ route('admin.candidates.index') }}",
     columns: [
         { data: 'placeholder', name: 'placeholder' },
-        { data: 'manager_name', name: 'Manager Name' },
+        { data: 'manager_name', name: 'manager_name' },
         { data: 'id', name: 'ID' },
-        { data: 'team_name', name: 'Team Name' },
-        { data: 'fan_club', name: 'Fan Club' },
-        { data: 'link_by', name: 'Link By' },
-        { data: 'dob', name: 'DOB' },
-        { data: 'gender', name: 'Gender' },
-        { data: 'email', name: 'Email' },
-        { data: 'phone', name: 'Phone' },
-        { data: 'apply_date', name: 'Apply Date' },
-        { data: 'bank', name: 'Bank' },
-        { data: 'account_no', name: 'Bank Account' },
+        { data: 'team_name', name: 'team_name' },
+        { data: 'fan_club', name: 'fan_club' },
+        { data: 'linkby', name: 'linkby' },
+        { data: 'dob', name: 'dob' },
+        { data: 'gender', name: 'gender' },
+        { data: 'email', name: 'email' },
+        { data: 'phone', name: 'phone' },
+        { data: 'apply_date', name: 'created_at' },
+        { data: 'bank', name: 'bank' },
+        { data: 'account_no', name: 'account_no' },
         { data: 'transaction', name: 'Transaction', sortable: false, searchable: false  },
-        { data: 'status', name: 'Status ' },
+        { data: 'status', name: 'status ' },
         { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
     order: [[ 2, 'desc' ]],
+    stateSave: true,
+    paging: true,
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    pagingType: "full_numbers",
     pageLength: 25,
     };
     let table = $('.datatable-Candidate').DataTable(dtOverrideGlobals);

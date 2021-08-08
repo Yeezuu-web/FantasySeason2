@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     //Candidate
     Route::delete('candidates/destroy', [CandidatesController::class , 'massDestroy'])->name('candidates.massDestroy');
+    Route::get('candidates/export', [CandidatesController::class, 'export'])->name('candidates.export');
     Route::resource('candidates', CandidatesController::class)->except(['create', 'store']);
 
     Route::get('approval/index', [ApprovalController::class, 'index'])->name('approval.index');

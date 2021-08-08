@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use Gate;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
+use App\Exports\CandidatesExport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
+use App\Exports\CandidatesMultiSheetExport;
 use App\Http\Requests\StoreCandidateRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\MassDestroyCandidateRequest;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Yajra\DataTables\Facades\DataTables;
 
 class CandidatesController extends Controller
 {
@@ -22,6 +25,7 @@ class CandidatesController extends Controller
         abort_if(Gate::denies('candidate_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $candidates = Candidate::with(['media'])->get();
+
         if ($request->ajax()) {
             $query = Candidate::with(['media'])->select('candidates.*');
             $table = Datatables::of($query);
@@ -62,8 +66,8 @@ class CandidatesController extends Controller
 
                 // return implode(' ', $labels);
             });
-            $table->editColumn('link_by', function ($row) {
-                return $row->link_by ? $row->link_by : '';
+            $table->editColumn('linkny', function ($row) {
+                return $row->linkby ? $row->linkby : '';
             });
             $table->editColumn('dob', function ($row) {
                 return $row->dob ? $row->dob : '';
@@ -94,10 +98,18 @@ class CandidatesController extends Controller
                 return '';
             });
             $table->editColumn('status', function ($row) {
-                return $row->status ? $row->status : '';
+                if($row->status == 0){ 
+                    return sprintf('<span class="badge badge-info">%s</span>', 'Pendding');
+                }
+                if($row->status == 1){ 
+                    return sprintf('<span class="badge badge-success">%s</span>', 'Approved');
+                }
+                if($row->status == 2){ 
+                    return sprintf('<span class="badge badge-danger">%s</span>', 'Rejected');
+                }
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'transaction']);
+            $table->rawColumns(['actions', 'placeholder', 'transaction', 'status']);
 
             return $table->make(true);
         }
@@ -154,7 +166,7 @@ class CandidatesController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
+    
     public function storeCKEditorImages(Request $request)
     {
         abort_if(Gate::denies('candidate_create') && Gate::denies('candidate_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -166,7 +178,7 @@ class CandidatesController extends Controller
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
-
+    
     public function registerFan($club)
     {
         $data = [
@@ -191,5 +203,9 @@ class CandidatesController extends Controller
         }
 
         return view('frontend.register-fan', compact('fanClub', 'club'));
+    }
+
+    public function export(){
+        return Excel::download(new CandidatesMultiSheetExport, 'candidate.xlsx');
     }
 }
