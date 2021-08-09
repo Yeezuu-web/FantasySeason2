@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\FilesController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\admin\ApprovalController;
 use App\Http\Controllers\Admin\CandidatesController;
 use App\Http\Controllers\Admin\FileImportController;
@@ -48,11 +49,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     //Candidate
     Route::delete('candidates/destroy', [CandidatesController::class , 'massDestroy'])->name('candidates.massDestroy');
     Route::get('candidates/export', [CandidatesController::class, 'export'])->name('candidates.export');
+    Route::get('candidates/total', [CandidatesController::class, 'total'])->name('candidates.total');
     Route::resource('candidates', CandidatesController::class)->except(['create', 'store']);
 
+    //approval
     Route::get('approval/index', [ApprovalController::class, 'index'])->name('approval.index');
     Route::post('approval/update/{id}', [ApprovalController::class, 'update'])->name('approval.update');
     Route::post('approval/reject/{id}', [ApprovalController::class, 'reject'])->name('approval.reject');
+    Route::get('approval/pedding', [ApprovalController::class, 'pedding'])->name('approval.pedding');
+    Route::get('approval/approved', [ApprovalController::class, 'approved'])->name('approval.approved');
+    Route::get('approval/rejected', [ApprovalController::class, 'rejected'])->name('approval.rejected');
+
+    //report
+    Route::resource('reports', ReportsController::class);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

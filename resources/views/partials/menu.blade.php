@@ -32,6 +32,30 @@
                         </a>
                     </li>
                 @endcan
+                @can('candidate_approve')
+                    <li class="nav-item">
+                        <a href="{{ route("admin.approval.index") }}" class="nav-link {{ request()->is("admin/approval") || request()->is("admin/approval/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fa fa-user-friends">
+
+                            </i>
+                            <p>
+                                Candidates Approval
+                            </p>
+                        </a>
+                    </li>
+                @endcan
+                @can('report_access')
+                    <li class="nav-item">
+                        <a href="{{ route("admin.reports.index") }}" class="nav-link {{ request()->is("admin/reports") || request()->is("admin/reports/*") ? "active" : "" }}">
+                            <i class="fa-fw nav-icon fa fa-list">
+
+                            </i>
+                            <p>
+                                Reports
+                            </p>
+                        </a>
+                    </li>
+                @endcan
                 @can('user_management_access')
                     <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
                         <a class="nav-link nav-dropdown-toggle" href="#">

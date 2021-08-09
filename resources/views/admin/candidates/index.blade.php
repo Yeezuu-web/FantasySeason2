@@ -33,66 +33,66 @@
 </style>
 @endsection
 @section('content')
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-exclamation-triangle"></i></span>
+<div class="row">
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box">
+      <span class="info-box-icon bg-info elevation-1"><i class="fas fa-exclamation-triangle"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Candidate Pendding</span>
-                <span class="info-box-number">
-                  {{ $candidates ? $candidates->where('status', '=', 0)->count() : '' }}
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Candidate Pendding</span>
+        <span class="info-box-number" id="pedding">
+          {{ $candidates ? $candidates->where('status', '=', 0)->count() : '' }}
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Candidate Rejected</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 2)->count() : '' }}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
+      <div class="info-box-content">
+        <span class="info-box-text">Candidate Rejected</span>
+        <span class="info-box-number" id="rejected">{{ $candidates ? $candidates->where('status', '=', 2)->count() : '' }}</span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
 
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
+  <!-- fix for small devices only -->
+  <div class="clearfix hidden-md-up"></div>
 
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Candidate Approved</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 1)->count() : '' }}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Candidate Approved</span>
+        <span class="info-box-number" id="approved">{{ $candidates ? $candidates->where('status', '=', 1)->count() : '' }}</span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Total Candidate</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->count() : '' }}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-        </div>
+      <div class="info-box-content">
+        <span class="info-box-text">Total Candidate</span>
+        <span class="info-box-number" id="total">{{ $candidates ? $candidates->count() : '' }}</span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+</div>
 <div class="card">
     <div class="card-header">
         Candidate
@@ -117,7 +117,7 @@
 
                         </th>
                         <th>
-                            Full-Name
+                          Full-Name
                         </th>
                         <th>
                             ID
@@ -194,16 +194,10 @@
       let selectAllButtonTrans = '{{ trans('global.select_all') }}'
       let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
 
-      let languages = {
-        'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
-      };
-
       $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
       $.extend(true, $.fn.dataTable.defaults, {
-        language: {
-          url: languages['{{ app()->getLocale() }}']
-        },
-        columnDefs: [{
+        columnDefs: [
+            {
                 orderable: false,
                 className: 'select-checkbox',
                 targets: 0
@@ -214,13 +208,10 @@
             }, {
             targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             visible: true,
-            }, { 
-            targets: '_all',
-            visible: false
-            }],
-            select: {
-            style:    'multi+shift',
-            selector: 'td:first-child'
+        }],
+        select: {
+          style:    'multi+shift',
+          selector: 'td:first-child'
         },
         order: [],
         scrollX: true,
@@ -308,8 +299,8 @@
             url: "{{ route('admin.candidates.massDestroy') }}",
             className: 'btn-danger',
             action: function (e, dt, node, config) {
-            var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-                return $(entry).data('entry-id')
+            var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
+                return entry.id
             });
 
             if (ids.length === 0) {
@@ -324,13 +315,18 @@
                 method: 'POST',
                 url: config.url,
                 data: { ids: ids, _method: 'DELETE' }})
-                .done(function () { location.reload() })
+                .done(function () { 
+                  table.draw(); 
+                  $('#total').load('/admin/candidates/total'); 
+                  $('#pedding').load('/admin/approval/pedding'); 
+                  $('#rejected').load('/admin/approval/rejected'); 
+                  $('#approved').load('/admin/approval/approved'); 
+                })
             }
             }
         }
         dtButtons.push(deleteButton)
     @endcan
-
     let dtOverrideGlobals = {
     buttons: dtButtons,
     bProcessing: true,
@@ -341,7 +337,7 @@
     columns: [
         { data: 'placeholder', name: 'placeholder' },
         { data: 'manager_name', name: 'manager_name' },
-        { data: 'id', name: 'ID' },
+        { data: 'id', name: 'id' },
         { data: 'team_name', name: 'team_name' },
         { data: 'fan_club', name: 'fan_club' },
         { data: 'linkby', name: 'linkby' },
@@ -370,11 +366,12 @@
             .columns.adjust();
     });
       
-      $('.filter-input').keyup(function(){
-        table.column( $(this).data('column') )
-          .search( $(this).val() )
-          .draw()
-      })
+    $('.filter-input').keyup(function(){
+      table.column( $(this).data('column') )
+        .search( $(this).val() )
+        .draw()
+    });
+
     
   })
 </script>

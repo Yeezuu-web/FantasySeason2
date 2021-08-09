@@ -32,7 +32,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Candidate Pendding</span>
-                <span class="info-box-number">
+                <span class="info-box-number" id="pedding">
                   {{ $candidates ? $candidates->where('status', '=', 0)->count() : '' }}
                 </span>
               </div>
@@ -47,7 +47,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Candidate Rejected</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 2)->count() : '' }}</span>
+                <span class="info-box-number" id="rejected">{{ $candidates ? $candidates->where('status', '=', 2)->count() : '' }}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -64,7 +64,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Candidate Approved</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->where('status', '=', 1)->count() : '' }}</span>
+                <span class="info-box-number" id="approved">{{ $candidates ? $candidates->where('status', '=', 1)->count() : '' }}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -77,7 +77,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Total Candidate</span>
-                <span class="info-box-number">{{ $candidates ? $candidates->count() : '' }}</span>
+                <span class="info-box-number" id="total">{{ $candidates ? $candidates->count() : '' }}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -102,7 +102,7 @@
             <!--      </tr>-->
             <!--    </thead>-->
             <!--</table>-->
-            <table class=" table table-bordered table-hover datatable datatable-candidate">
+            <table class=" table table-bordered table-hover ajaxTable datatable datatable-Approval">
                 <thead>
                     <tr>
                         <th>
@@ -152,168 +152,30 @@
                             Status
                         </th>
                         <th>
-                            Approval
+                            Approve
                         </th>
                         <th>
                             Action
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach($candidates as $key => $candidate)
-                        <tr data-entry-id="{{ $candidate->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $candidate->manager_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->team_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->fan_club ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->linkby ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->dob ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->gender ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->email ?? '' }}
-                            </td>
-                            <td>
-                                {{ strval($candidate->phone) ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->created_at ?? '' }}
-                            </td>
-                            <td>
-                                {{ strval($candidate->bank) ?? '' }}
-                            </td>
-                            <td>
-                                {{ $candidate->account_no  ?? '' }}
-                            </td>
-                            <td>
-                                <style>
-                                    #imgg{
-                                        cursor: pointer;
-                                        transition: all .2s ease-in-out;
-                                        z-index: 1;
-                                    }
-                                    #imgg:hover{
-                                        transform: scale(8, 13);  
-                                    }
-                                </style>
-                                @if($candidate->transaction)
-                                    <img id="imgg" src="{{ $candidate->transaction->getUrl() }}" id="{{$candidate->id}}" width="50px" height="50px" style="display: inline-block; " onclick="showimg({{$candidate->id}},'{{ $candidate->transaction->getUrl() }}', '{{$candidate->manager_name}}')"/>
-                                @else
-                                    <img src="" />
-                                @endif
-                            </td>
-                            <td>
-                                @if($candidate->status === 0)
-                                    <span class="badge badge-info badge-sm">Pendding</span>
-                                @endif
-                                @if($candidate->status === 1)
-                                    <span class="badge badge-success badge-sm">Aproved</span>
-                                @endif
-                                @if($candidate->status === 2)
-                                    <span class="badge badge-danger badge-sm">Rejected</span>
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                @can('candidate_aprove')
-                                    @if ($candidate->status === 1)
-                                        <button class="btn btn-sm btn-danger" onclick="reject({{$candidate->id}})">
-                                            Reject
-                                        </button>
-                                    @elseif($candidate->status === 2)
-                                        <button class="btn btn-sm btn-primary" onclick="approve({{$candidate->id}})">
-                                            Aprove
-                                        </button>
-                                    @else
-                                        <button class="btn btn-sm btn-primary" onclick="approve({{$candidate->id}})">
-                                            Aprove
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" onclick="reject({{$candidate->id}})">
-                                            Reject
-                                        </button>
-                                    @endif
-                                @endcan
-                            </td>
-                            <td>
-                                @can('candidate_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.candidates.show', $candidate->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                                @can('candidate_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.candidates.edit', $candidate->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('candidate_delete')
-                                    <form action="{{ route('admin.candidates.destroy', $candidate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
             </table>
         </div>
     </div>
 </div>
-<!-- The Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            </div>
-        <div class="modal-body">
-            <img src="" class="modal-content1" id="img01" width="100%">
-        </div>
-      </div>
-    </div>
-  </div>
-{{-- <div id="myModal" class="modal">
-  <span class="close mt-5">&times;</span>
-  <img class="modal-content" id="img01" width="50%">
-  <div id="caption"></div>
-</div> --}}
 @endsection
 @section('scripts')
 <script>
-function showimg(id, url, name){
-    Swal.fire({
-    imageUrl: url,
-    imageWidth: '70%',
-    imageHeight: '70%',
-    imageAlt: name
-    })
-//   $('#myModal').modal('toggle');
-//   $('#img01').attr('src', url);
-//   $('.modal-title').text(name);
-}
+  function showimg(param){
+    let url = $(param).attr('src');
+    let name = $(param).attr('alt');
+      Swal.fire({
+      imageUrl: url,
+      imageWidth: '70%',
+      imageHeight: '70%',
+      imageAlt: name
+      })
+  }
 </script>
 <script>
     $(function() {
@@ -356,6 +218,10 @@ function showimg(id, url, name){
         },
         order: [],
         scrollX: true,
+        stateSave: true,
+        paging: true,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pagingType: "full_numbers",
         pageLength: 25,
         dom: 'lBfrtip<"actions">',
         buttons: [
@@ -381,6 +247,14 @@ function showimg(id, url, name){
             }
           },
           {
+            extend: 'copy',
+            className: 'btn-default',
+            text: copyButtonTrans,
+            exportOptions: {
+              columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            }
+          },
+          {
             extend: 'csv',
             className: 'btn-default',
             text: csvButtonTrans,
@@ -389,35 +263,19 @@ function showimg(id, url, name){
             }
           },
           {
-            extend: 'copy',
-            className: 'btn-default',
-            text: copyButtonTrans,
-            exportOptions: {
-              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            }
-          },
-          {
-            extend: 'excel',
             className: 'btn-default',
             text: excelButtonTrans,
-            exportOptions: {
-              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            },
-            customizeData: function ( data ) {
-                for (var i=0; i<data.body.length; i++){
-                    for (var j=0; j<data.body[i].length; j++ ){
-                        data.body[i][j] = '\u200C' + data.body[i][j];
-                    }
-                }
-            }    
+            action: function( e, dt ){
+              location.href = '/admin/candidates/export';
+            }
           },
           {
             extend: 'print',
             className: 'btn-default',
             text: printButtonTrans,
             exportOptions: {
-              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            },    
+              columns: [2, 1, 3, 4, 5, 6, 7, 8, 9, 10],
+            }
           },
           {
             extend: 'colvis',
@@ -435,7 +293,7 @@ function showimg(id, url, name){
 
 </script>
 <script>
-    $(function () {
+  $(function () {
     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
     @can('candidate_delete')
         let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
@@ -467,24 +325,54 @@ function showimg(id, url, name){
         dtButtons.push(deleteButton)
     @endcan
 
-    $.extend(true, $.fn.dataTable.defaults, {
-        orderCellsTop: true,
-        order: [[ 2, 'desc' ]],
-        pageLength: 25,
-    });
-    let table = $('.datatable-candidate:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+    let dtOverrideGlobals = {
+    buttons: dtButtons,
+    bProcessing: true,
+    serverSide: true,
+    retrieve: true,
+    aaSorting: [],
+    ajax: "{{ route('admin.approval.index') }}",
+    columns: [
+        { data: 'placeholder', name: 'placeholder' },
+        { data: 'manager_name', name: 'manager_name' },
+        { data: 'id', name: 'ID' },
+        { data: 'team_name', name: 'team_name' },
+        { data: 'fan_club', name: 'fan_club' },
+        { data: 'linkby', name: 'linkby' },
+        { data: 'dob', name: 'dob' },
+        { data: 'gender', name: 'gender' },
+        { data: 'email', name: 'email' },
+        { data: 'phone', name: 'phone' },
+        { data: 'apply_date', name: 'created_at' },
+        { data: 'bank', name: 'bank' },
+        { data: 'account_no', name: 'account_no' },
+        { data: 'transaction', name: 'transaction', sortable: false, searchable: false  },
+        { data: 'status', name: 'status' },
+        { data: 'approve', name: 'approve', sortable: false, searchable: false },
+        { data: 'actions', name: '{{ trans('global.actions') }}' }
+    ],
+    orderCellsTop: true,
+    order: [[ 2, 'desc' ]],
+    stateSave: true,
+    paging: true,
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    pagingType: "full_numbers",
+    pageLength: 25,
+    };
+
+    let table = $('.datatable-Approval').DataTable(dtOverrideGlobals);
     $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });
-    $('.filter-input').keyup(function(){
-      table.column( $(this).data('column') )
-        .search( $(this).val() )
-        .draw()
-    })
-  
- })
-
+      
+      $('.filter-input').keyup(function(){
+        table.column( $(this).data('column') )
+          .search( $(this).val() )
+          .draw()
+      })
+    
+  })
 </script>
 <script>
     function approve(id){
@@ -498,6 +386,7 @@ function showimg(id, url, name){
             buttonsStyling: false
         })
 
+        let table = $('.datatable-Approval').DataTable();
         
         swalWithBootstrapButtons.fire({
         title: 'Will you approve?',
@@ -511,7 +400,7 @@ function showimg(id, url, name){
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: "/fantasy/admin/approval/update/"+id,
+                url: "/admin/approval/update/"+id,
                 data: {
                     id: id,
                     _token: _token
@@ -521,17 +410,15 @@ function showimg(id, url, name){
                 },
                 success: function (response) {
                     if(response){
-                        // swalWithBootstrapButtons.fire(
-                        //     'Approved!',
-                        //     'This player has been appoved.',
-                        //     'success'
-                        // )    
-                        // $('.loading').removeAttr('hidden');
-                        setTimeout(function(){
-                            location.reload();
-                        }, 1200);
+                        table.draw();
                     }
-                }
+                },
+                complete: function(){
+                  $('.loading').attr('hidden', 'true');
+                  $('#pedding').load('/admin/approval/pedding');
+                  $('#rejected').load('/admin/approval/rejected');
+                  $('#approved').load('/admin/approval/approved');  
+                },
             }); 
         } else if (
             /* Read more about handling dismissals below */
@@ -548,6 +435,8 @@ function showimg(id, url, name){
 
     function reject(id){
         let _token = $('input[name="_token"').val();
+
+        let table = $('.datatable-Approval').DataTable();
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -570,7 +459,7 @@ function showimg(id, url, name){
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: "/fantasy/admin/approval/reject/"+id,
+                url: "/admin/approval/reject/"+id,
                 data: {
                     id: id,
                     _token: _token
@@ -580,17 +469,15 @@ function showimg(id, url, name){
                 },
                 success: function (response) {
                     if(response){
-                        // swalWithBootstrapButtons.fire(
-                        //     'Approved!',
-                        //     'This player has been appoved.',
-                        //     'success'
-                        // )    
-                        // $('.loading').removeAttr('hidden');
-                        setTimeout(function(){
-                            location.reload();
-                        }, 1200);
+                        table.draw();
                     }
-                }
+                },
+                complete: function(){
+                  $('.loading').attr('hidden', 'true');
+                  $('#pedding').load('/admin/approval/pedding');
+                  $('#rejected').load('/admin/approval/rejected');
+                  $('#approved').load('/admin/approval/approved');
+                },
             }); 
         } else if (
             /* Read more about handling dismissals below */

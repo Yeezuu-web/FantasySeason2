@@ -208,4 +208,8 @@ class CandidatesController extends Controller
     public function export(){
         return Excel::download(new CandidatesMultiSheetExport, 'candidate.xlsx');
     }
+
+    public function total(){
+        return response()->json(Candidate::count());
+    } 
 }

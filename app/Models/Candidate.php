@@ -19,6 +19,41 @@ class Candidate extends Model implements HasMedia
 
     protected $table = "candidates";
 
+    public const FANCLUB_SELECT = [
+        'Arsenal' => 'Arsenal',
+        'Aston Villa' => 'Aston Villa',
+        'Brentford' => 'Brentford',
+        'Brighton' => 'Brighton',
+        'Burnley' => 'Burnley',
+        'Chelsea' => 'Chelsea',
+        'Crystal Palace' => 'Crystal Palace',
+        'Everton' => 'Everton',
+        'Leeds United' => 'Leeds United',
+        'Leicester City' => 'Leicester City',
+        'Liverpool' => 'Liverpool',
+        'Man City' => 'Man City',
+        'Man United' => 'Man United',
+        'Newcastle' => 'Newcastle',
+        'Norwich City' => 'Norwich City',
+        'Southampton' => 'Southampton',
+        'Tottenham Hotspur' => 'Tottenham Hotspur',
+        'Watford' => 'Watford',
+        'West Ham' => 'West Ham',
+        'Wolves' => 'Wolves',
+    ];
+
+    public const BANK_SELECT = [
+        'ABA' => 'ABA',
+        'Wing' => 'Wing',
+        'J-Trust Rolyal Bank' => 'J-Trust Rolyal Bank',
+    ];
+
+    public const GENDER_SELECT = [
+        'Male' => 'Male',
+        'Femal' => 'Femal',
+        'Other' => 'Other'
+    ];
+
     protected $appends = [
         'transaction',
     ];
@@ -83,4 +118,5 @@ class Candidate extends Model implements HasMedia
         $records = DB::table('candidates')->select('id', 'manager_name', 'team_name', 'dob', 'gender', 'fan_club', 'linkby', 'email', 'phone', 'bank', 'account_no', 'created_at')->get()->toArray();
         return $records;
     }
+
 }
